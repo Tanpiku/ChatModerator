@@ -1,28 +1,20 @@
 package tc.oc;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a set of violations for an individual player.
  */
 public final class ViolationSet {
-    @Nonnull
-    private final Player player;
-    @Nonnull
-    private final HashMap<Class<? extends Violation>, Double> violationLevels;
-    @Nonnull
-    private final HashMap<Class<? extends Violation>, Set<Violation>> violations;
+    private final OfflinePlayer player;
+    private final Map<Class<? extends Violation>, Double> violationLevels = new HashMap<>();
+    private final Map<Class<? extends Violation>, Set<Violation>> violations = new HashMap<>();
 
     private ViolationSet() {
         this.player = null;
-        this.violationLevels = null;
-        this.violations = null;
     }
 
     /**
@@ -30,10 +22,8 @@ public final class ViolationSet {
      *
      * @param player The player.
      */
-    public ViolationSet(@Nonnull final Player player) {
+    public ViolationSet(final OfflinePlayer player) {
         this.player = Preconditions.checkNotNull(player, "Player");
-        this.violationLevels = new HashMap<>();
-        this.violations = new HashMap<>();
     }
 
     /**
@@ -42,7 +32,7 @@ public final class ViolationSet {
      * @param violationType The type of violation.
      * @return The violation level.
      */
-    public double getViolationLevel(@Nonnull final Class<? extends Violation> violationType) {
+    public double getViolationLevel(final Class<? extends Violation> violationType) {
         Double level = this.violationLevels.get(Preconditions.checkNotNull(violationType));
         if (level != null) {
             return level;
@@ -56,7 +46,7 @@ public final class ViolationSet {
      *
      * @param violation The violation to be added.
      */
-    public void addViolation(@Nonnull final Violation violation) {
+    public void addViolation(final Violation violation) {
         Class<? extends Violation> type = Preconditions.checkNotNull(violation, "Violation").getClass();
         Set<Violation> violations = this.violations.get(type);
         if (violations == null) {
@@ -64,6 +54,7 @@ public final class ViolationSet {
         }
         violations.add(violation);
         this.violations.put(type, violations);
+        this.violationLevels.put(type, violation.getLevel());
     }
 
     /**
@@ -71,15 +62,14 @@ public final class ViolationSet {
      *
      * @return All violations.
      */
-    @Nonnull
     public Set<Violation> getViolations() {
-        HashSet<Violation> violations = new HashSet<>();
+        Set<Violation> violations = new HashSet<>();
         for (Set<Violation> v : this.violations.values()) {
             for (Violation violation : v) {
                 violations.add(violation);
             }
         }
-        return violations;
+        return Collections.unmodifiableSet(violations);
     }
 
     /**
@@ -88,12 +78,11 @@ public final class ViolationSet {
      * @param type The type of violation to get.
      * @return The violations of the specified type.
      */
-    @Nonnull
-    public Set<Violation> getViolations(@Nonnull final Class<? extends Violation> type) {
+    public Set<Violation> getViolations(final Class<? extends Violation> type) {
         Set<Violation> violations = this.violations.get(type);
         if (violations == null) {
             violations = new HashSet<>();
         }
-        return violations;
+        return Collections.unmodifiableSet(violations);
     }
 }

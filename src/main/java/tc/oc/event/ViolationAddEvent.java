@@ -1,9 +1,9 @@
 package tc.oc.event;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import tc.oc.Violation;
 
 import javax.annotation.Nonnull;
@@ -11,17 +11,35 @@ import javax.annotation.Nonnull;
 /**
  * Called when a violation is added to a player.
  */
-public class ViolationAddEvent extends PlayerEvent {
+public class ViolationAddEvent extends Event {
     /**
      * The handlers for the event.
      */
     private static final HandlerList handlers = new HandlerList();
     @Nonnull
     private final Violation violation;
+    @Nonnull
+    private final OfflinePlayer player;
 
-    public ViolationAddEvent(@Nonnull final Player player, @Nonnull final Violation violation) {
-        super(player);
+    private ViolationAddEvent() {
+        this.violation = null;
+        this.player = null;
+    }
+
+    public ViolationAddEvent(@Nonnull final OfflinePlayer player, @Nonnull final Violation violation) {
+        super(true);
         this.violation = Preconditions.checkNotNull(violation, "Violation");
+        this.player = Preconditions.checkNotNull(player, "Player");
+        Preconditions.checkArgument(player.equals(violation.getPlayer()), "Provided player (" + player + ") does not equal Violation player (" + violation + ")");
+    }
+
+    /**
+     * Gets the handlers for the event.
+     *
+     * @return The handlers for the event.
+     */
+    public static HandlerList getHandlerList() {
+        return ViolationAddEvent.handlers;
     }
 
     /**

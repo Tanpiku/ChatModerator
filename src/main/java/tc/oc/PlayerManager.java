@@ -1,19 +1,17 @@
 package tc.oc;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manager for players. Handles the addition of violations and modifications of violation levels.
  */
 public final class PlayerManager {
-    @Nonnull
-    private final HashMap<Player, ViolationSet> violationSets = new HashMap<>();
-    @Nonnull
+    private final Map<OfflinePlayer, ViolationSet> violationSets = new HashMap<>();
     private final ChatModeratorPlugin plugin;
 
     private PlayerManager() {
@@ -25,7 +23,7 @@ public final class PlayerManager {
      *
      * @param plugin The plugin instance.
      */
-    PlayerManager(@Nonnull final ChatModeratorPlugin plugin) {
+    PlayerManager(final ChatModeratorPlugin plugin) {
         Preconditions.checkArgument(Preconditions.checkNotNull(plugin, "Plugin").isEnabled(), "Plugin not loaded.");
         this.plugin = plugin;
     }
@@ -37,7 +35,7 @@ public final class PlayerManager {
      * @return The violations for the specified player.
      */
     @Nullable
-    public ViolationSet getViolations(@Nonnull final Player player) {
+    public ViolationSet getViolationSet(final OfflinePlayer player) {
         ViolationSet violations = this.violationSets.get(Preconditions.checkNotNull(player, "Player"));
         if (violations == null) {
             violations = new ViolationSet(player);

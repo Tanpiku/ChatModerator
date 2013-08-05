@@ -1,13 +1,13 @@
 package tc.oc.violations;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
 import tc.oc.Violation;
 import tc.oc.filters.IPFilter;
 
-import javax.annotation.Nonnull;
 import java.net.InetAddress;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,9 +15,7 @@ import java.util.Set;
  * Added when a player posts a server IP in chat.
  */
 public class ServerIPViolation extends Violation {
-    @Nonnull
     private final Set<InetAddress> ipAddresses = new HashSet<>();
-    @Nonnull
     private final String initialMessage;
 
     private ServerIPViolation() {
@@ -25,7 +23,7 @@ public class ServerIPViolation extends Violation {
         this.initialMessage = null;
     }
 
-    public ServerIPViolation(@Nonnull final Instant time, @Nonnull final Player player, @Nonnull final String message, final double level, @Nonnull final InetAddress... ipAddresses) {
+    public ServerIPViolation(final Instant time, final OfflinePlayer player, final String message, final double level, final InetAddress... ipAddresses) {
         super(time, player, message, level);
         this.initialMessage = message;
         for (InetAddress ipAddress : Preconditions.checkNotNull(ipAddresses, "IP addresses")) {
@@ -49,8 +47,7 @@ public class ServerIPViolation extends Violation {
      *
      * @return The sent IP addresses.
      */
-    @Nonnull
     public Set<InetAddress> getIPAddresses() {
-        return this.ipAddresses;
+        return Collections.unmodifiableSet(this.ipAddresses);
     }
 }

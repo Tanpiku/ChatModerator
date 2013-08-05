@@ -1,22 +1,17 @@
 package tc.oc;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
-
-import javax.annotation.Nonnull;
 
 /**
  * Represents an individual violation.
  */
 public abstract class Violation {
-    @Nonnull
     protected final Instant time;
-    @Nonnull
-    protected final Player player;
+    protected final OfflinePlayer player;
     //  TODO: Decimals or no?
     protected final double level;
-    @Nonnull
     protected String message;
     protected boolean cancelled = false;
     protected boolean fixed = false;
@@ -31,7 +26,7 @@ public abstract class Violation {
     /**
      * For subclasses only.
      */
-    protected Violation(@Nonnull final Instant time, @Nonnull final Player player, @Nonnull final String message, final double level) {
+    protected Violation(final Instant time, final OfflinePlayer player, final String message, final double level) {
         this.time = Preconditions.checkNotNull(time, "Time");
         this.player = Preconditions.checkNotNull(player, "Player");
         this.message = Preconditions.checkNotNull(message, "Message");
@@ -44,7 +39,6 @@ public abstract class Violation {
      *
      * @return The time at which the message was sent.
      */
-    @Nonnull
     public final Instant getTime() {
         return this.time;
     }
@@ -54,7 +48,6 @@ public abstract class Violation {
      *
      * @return The message.
      */
-    @Nonnull
     public final String getMessage() {
         return this.message;
     }
@@ -64,8 +57,7 @@ public abstract class Violation {
      *
      * @return The player.
      */
-    @Nonnull
-    public final Player getPlayer() {
+    public final OfflinePlayer getPlayer() {
         return this.player;
     }
 
@@ -103,6 +95,19 @@ public abstract class Violation {
      */
     public void setFixed(boolean fixed) {
         this.setCancelled(fixed);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Violation{");
+        sb.append("time=").append(time);
+        sb.append(", player=").append(player);
+        sb.append(", level=").append(level);
+        sb.append(", message='").append(message).append('\'');
+        sb.append(", cancelled=").append(cancelled);
+        sb.append(", fixed=").append(fixed);
+        sb.append('}');
+        return sb.toString();
     }
 
     /**

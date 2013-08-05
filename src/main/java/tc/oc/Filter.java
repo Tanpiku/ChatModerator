@@ -1,23 +1,21 @@
 package tc.oc;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
  * Represents a filter that filters chat messages, dispatching violations if necessary.
  */
 public abstract class Filter {
-    @Nonnull
     protected final ChatModeratorPlugin plugin;
 
     private Filter() {
         this.plugin = null;
     }
 
-    protected Filter(@Nonnull final ChatModeratorPlugin plugin) {
+    protected Filter(final ChatModeratorPlugin plugin) {
         Preconditions.checkArgument(Preconditions.checkNotNull(plugin, "Plugin").isEnabled(), "Plugin not loaded.");
         this.plugin = plugin;
     }
@@ -31,5 +29,5 @@ public abstract class Filter {
      * @param player  The player that sent the message.
      */
     @Nullable
-    public abstract String filter(@Nonnull String message, @Nonnull final Player player);
+    public abstract String filter(String message, final OfflinePlayer player);
 }
