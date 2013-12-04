@@ -1,4 +1,4 @@
-package tc.oc.listener;
+package tc.oc.chatmoderator.listeners;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
@@ -7,22 +7,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import tc.oc.ChatModeratorPlugin;
-import tc.oc.Filter;
 
-import java.util.HashSet;
-import java.util.Set;
+import tc.oc.chatmoderator.ChatModeratorPlugin;
+import tc.oc.chatmoderator.filters.Filter;
+
+import java.util.*;
 
 /**
  * Listener for chat-related events.
  */
 public final class ChatModeratorListener implements Listener {
     private final ChatModeratorPlugin plugin;
-    private final Set<Filter> filters = new HashSet<>();
-
-    private ChatModeratorListener() {
-        this.plugin = null;
-    }
+    private List<Filter> filters = new ArrayList<>();
 
     public ChatModeratorListener(final ChatModeratorPlugin plugin) {
         Preconditions.checkArgument(Preconditions.checkNotNull(plugin, "Plugin").isEnabled(), "Plugin not loaded.");
@@ -36,6 +32,9 @@ public final class ChatModeratorListener implements Listener {
      */
     public void registerFilter(final Filter filter) {
         this.filters.add(Preconditions.checkNotNull(filter, "Filter"));
+        plugin.getLogger().info("Registered filter: " + filter.getClass().getSimpleName());
+
+        Collections.sort(this.filters);
     }
 
     /**
@@ -45,14 +44,18 @@ public final class ChatModeratorListener implements Listener {
      */
     public void unRegisterFilter(final Filter filter) {
         this.filters.remove(Preconditions.checkNotNull(filter, "Filter"));
+        plugin.getLogger().info("Unregistered filter: " + filter.getClass().getSimpleName());
     }
 
     /**
      * Un-registers all filters.
      */
     public void unRegisterAll() {
-        for (Filter filter : this.filters) {
-            this.filters.remove(filter);
+        for(Iterator<Filter> it = filters.iterator(); it.hasNext(); ) {
+            Filter f = it.next();
+
+            plugin.getLogger().info("Unregistered filter: " + f.getClass().getSimpleName());
+            it.remove();
         }
     }
 
@@ -63,9 +66,12 @@ public final class ChatModeratorListener implements Listener {
      */
     public void unRegisterFilters(final Class<? extends Filter> type) {
         Preconditions.checkNotNull(type, "Type");
-        for (Filter filter : this.filters) {
-            if (filter.getClass().equals(type)) {
-                this.filters.remove(filter);
+        for(Iterator<Filter> it = filters.iterator(); it.hasNext(); ) {
+            Filter f = it.next();
+
+            if(f.getClass().equals(type)) {
+                plugin.getLogger().info("Unregistered filter: " + f.getClass().getSimpleName());
+                it.remove();
             }
         }
     }
@@ -74,9 +80,14 @@ public final class ChatModeratorListener implements Listener {
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
         String message = Preconditions.checkNotNull(event, "Event").getMessage();
         OfflinePlayer player = Bukkit.getOfflinePlayer(event.getPlayer().getName());
+
         for (Filter filter : this.filters) {
+            if (message == null || message.equals(""))
+                break;
+
             message = filter.filter(message, player);
         }
+
         if (message != null) {
             event.setMessage(message);
         } else {

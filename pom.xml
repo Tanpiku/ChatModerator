@@ -27,7 +27,7 @@
         <!-- The prefix to use when logging to the console -->
         <plugin.prefix>${project.name}</plugin.prefix>
         <!-- The main class -->
-        <plugin.mainClass>tc.oc.ChatModeratorPlugin</plugin.mainClass>
+        <plugin.mainClass>tc.oc.chatmoderator.ChatModeratorPlugin</plugin.mainClass>
     </properties>
 
     <dependencies>

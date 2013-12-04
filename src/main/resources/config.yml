@@ -1,2 +1,56 @@
+config:
+    delay-between-messages: 1000
 debug:
     enabled: false
+filters:
+    duplicate-messages:
+        default-level: 10
+        priority: 5
+    server-ip:
+        default-level: 4
+        priority: 1
+    repeated-characters:
+        default-level: 10
+        priority: 2
+        count: 5
+    all-caps:
+        default-level: 12
+        priority: 3
+    profanity:
+        default-level: 10
+        priority: 4
+        expressions:
+            "f+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*[ck]*[^a-zA-Z\\s]*[ck]+": # "fuck"
+                level: 30
+            "w+[^a-zA-Z\\s]*a+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*[ck]+": # "wank"
+                level: 15
+            "d+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*c+[^a-zA-Z\\s]*[ck]+": # "dick"
+                level: 20
+            "[ck]+[^a-zA-Z\\s]*o+[^a-zA-Z\\s]*[ck]+[^a-zA-Z\\s]*[ck]+": # "cock"
+                level: 22
+            "p+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*s+": # "penis"
+                level: 20
+            "s+[^a-zA-Z\\s]*h+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*[tz]+": # "shit"
+                level: 10
+            "p+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+": # "piss"
+                level: 7
+            "s+[^a-zA-Z\\s]*[ck]+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*t+": # "skeet"
+                level: 13
+            "b+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*c+[^a-zA-Z\\s]*h+": # "bitch"
+                level: 15
+            "t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*s+": # "tits"
+                level: 12
+            "t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*s+": # "titties"
+                level: 12
+            "p+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*[yie]+": # "pussy"
+                level: 20
+            "[kc]+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*t+": # "cunt"
+                level: 25
+            "t+[^a-zA-Z\\s]*w+[^a-zA-Z\\s]*a+[^a-zA-Z\\s]*t+": # "twat"
+                level: 12
+            "[ck]+[^a-zA-Z\\s]*l+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+": # "clit"
+                level: 15
+            "a+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+": # "ass"
+                level: 10
+            "[ck]+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*m+": # "cum"
+                level: 22

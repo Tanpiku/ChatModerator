@@ -1,4 +1,4 @@
-package tc.oc;
+package tc.oc.chatmoderator.violations;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
@@ -10,28 +10,20 @@ import org.joda.time.Instant;
 public abstract class Violation {
     protected final Instant time;
     protected final OfflinePlayer player;
-    //  TODO: Decimals or no?
-    protected final double level;
-    protected String message;
+    protected double level;
+    protected final String message;
     protected boolean cancelled = false;
-    protected boolean fixed = false;
-
-    private Violation() {
-        this.time = null;
-        this.player = null;
-        this.message = null;
-        this.level = 0.0D;
-    }
+    protected boolean fixed;
 
     /**
      * For subclasses only.
      */
-    protected Violation(final Instant time, final OfflinePlayer player, final String message, final double level) {
+    protected Violation(final Instant time, final OfflinePlayer player, final String message, double level, boolean fixed) {
         this.time = Preconditions.checkNotNull(time, "Time");
         this.player = Preconditions.checkNotNull(player, "Player");
         this.message = Preconditions.checkNotNull(message, "Message");
-        Preconditions.checkArgument(level > 0.0D, "Level must be a positive integer and larger than 0.");
         this.level = level;
+        this.fixed = fixed;
     }
 
     /**
@@ -79,6 +71,18 @@ public abstract class Violation {
         this.cancelled = cancelled;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Violation{");
+        sb.append("time=").append(time);
+        sb.append(", player=").append(player);
+        sb.append(", level=").append(level);
+        sb.append(", message='").append(message).append('\'');
+        sb.append(", cancelled=").append(cancelled);
+        sb.append('}');
+        return sb.toString();
+    }
+
     /**
      * Gets whether or not the violating chat message has been fixed.
      *
@@ -94,20 +98,7 @@ public abstract class Violation {
      * @param fixed Whether or not the violating chat message should be fixed.
      */
     public void setFixed(boolean fixed) {
-        this.setCancelled(fixed);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Violation{");
-        sb.append("time=").append(time);
-        sb.append(", player=").append(player);
-        sb.append(", level=").append(level);
-        sb.append(", message='").append(message).append('\'');
-        sb.append(", cancelled=").append(cancelled);
-        sb.append(", fixed=").append(fixed);
-        sb.append('}');
-        return sb.toString();
+        this.fixed = fixed;
     }
 
     /**
@@ -115,7 +106,17 @@ public abstract class Violation {
      *
      * @return The violation level.
      */
-    public final double getLevel() {
+    public double getLevel() {
         return this.level;
     }
+
+    /**
+     * Sets the violation level.
+     *
+     * @param level The level to set.
+     */
+    public void setLevel(double level) {
+        this.level = level;
+    }
+
 }

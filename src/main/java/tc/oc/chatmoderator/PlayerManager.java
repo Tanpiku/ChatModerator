@@ -1,4 +1,4 @@
-package tc.oc;
+package tc.oc.chatmoderator;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
@@ -11,12 +11,8 @@ import java.util.Map;
  * Manager for players. Handles the addition of violations and modifications of violation levels.
  */
 public final class PlayerManager {
-    private final Map<OfflinePlayer, ViolationSet> violationSets = new HashMap<>();
+    private final Map<OfflinePlayer, PlayerViolationManager> violationSets = new HashMap<>();
     private final ChatModeratorPlugin plugin;
-
-    private PlayerManager() {
-        this.plugin = null;
-    }
 
     /**
      * Creates a new player manager.
@@ -35,10 +31,10 @@ public final class PlayerManager {
      * @return The violations for the specified player.
      */
     @Nullable
-    public ViolationSet getViolationSet(final OfflinePlayer player) {
-        ViolationSet violations = this.violationSets.get(Preconditions.checkNotNull(player, "Player"));
+    public PlayerViolationManager getViolationSet(final OfflinePlayer player) {
+        PlayerViolationManager violations = this.violationSets.get(Preconditions.checkNotNull(player, "Player"));
         if (violations == null) {
-            violations = new ViolationSet(player);
+            violations = new PlayerViolationManager(player);
             this.violationSets.put(player, violations);
         }
         return violations;

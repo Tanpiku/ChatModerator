@@ -1,24 +1,22 @@
-package tc.oc;
+package tc.oc.chatmoderator.tests;
 
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import tc.oc.filters.IPFilter;
+import tc.oc.chatmoderator.filters.core.IPFilter;
+
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
- * Test for {@link tc.oc.filters.IPFilter}.
+ * Test for {@link tc.oc.chatmoderator.filters.core.IPFilter}.
  */
 public final class IPFilterTest extends TestCase {
     private static final int TEST_ITERATIONS = 5;
     private Random random;
-    private Pattern regexPattern;
 
     @Override
     public void setUp() {
         this.random = new Random();
-        this.regexPattern = Pattern.compile(IPFilter.IP_ADDRESS_EXPRESSION);
     }
 
     /**
@@ -28,7 +26,7 @@ public final class IPFilterTest extends TestCase {
     public void testIPRegex() throws Exception {
         for (int i = 0; i < IPFilterTest.TEST_ITERATIONS; i++) {
             String ipAddress = this.random.nextInt(255) + "." + this.random.nextInt(255) + "." + this.random.nextInt(255) + "." + this.random.nextInt(255);
-            assertTrue("testIPRegex() failed with IP address: [" + ipAddress + "]", this.regexPattern.matcher(ipAddress).matches());
+            assertTrue("testIPRegex() failed with IP address: [" + ipAddress + "]", IPFilter.getRegexPattern().matcher(ipAddress).matches());
         }
     }
 }

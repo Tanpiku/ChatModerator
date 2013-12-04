@@ -1,10 +1,11 @@
-package tc.oc.event;
+package tc.oc.chatmoderator.events;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import tc.oc.Violation;
+
+import tc.oc.chatmoderator.violations.Violation;
 
 import javax.annotation.Nonnull;
 
@@ -20,11 +21,6 @@ public class ViolationAddEvent extends Event {
     private final Violation violation;
     @Nonnull
     private final OfflinePlayer player;
-
-    private ViolationAddEvent() {
-        this.violation = null;
-        this.player = null;
-    }
 
     public ViolationAddEvent(@Nonnull final OfflinePlayer player, @Nonnull final Violation violation) {
         super(true);
