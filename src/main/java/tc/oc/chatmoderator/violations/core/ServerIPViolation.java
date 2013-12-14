@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
 
-import tc.oc.chatmoderator.filters.core.IPFilter;
 import tc.oc.chatmoderator.violations.Violation;
 
 import java.net.InetAddress;

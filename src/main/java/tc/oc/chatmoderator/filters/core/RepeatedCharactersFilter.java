@@ -27,12 +27,7 @@ public class RepeatedCharactersFilter extends Filter {
         Preconditions.checkArgument(characterCount > 1, "Character count must be greater than 1.");
         this.characterCount = characterCount;
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("(.)\\1{");
-        builder.append(this.characterCount);
-        builder.append(",}");
-
-        this.pattern = Pattern.compile(builder.toString());
+        this.pattern = RepeatedCharactersFilter.generatePattern(this.characterCount - 1);
     }
 
     /**
@@ -68,4 +63,19 @@ public class RepeatedCharactersFilter extends Filter {
         return message;
     }
 
+    /**
+     * Generates a pattern for a number of repeated characters greater than charCount.
+     *
+     * @param charCount The amount of characters to allow before triggering the filter.
+     *
+     * @return The compiled pattern.
+     */
+    public static Pattern generatePattern(int charCount) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("(.)\\1{");
+        builder.append(charCount);
+        builder.append(",}");
+
+        return Pattern.compile(builder.toString());
+    }
 }

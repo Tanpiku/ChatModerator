@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class AllCapsFilter extends Filter {
 
-    private final Pattern pattern = Pattern.compile("[A-Z0-9, ]{2,}");
+    private static final Pattern pattern = Pattern.compile("[A-Z0-9, ]{2,}");
 
     /**
      * Publicly insatiable version of the AllCapsFilter.
@@ -54,5 +54,14 @@ public class AllCapsFilter extends Filter {
         }
 
         return message;
+    }
+
+    /**
+     * Get the pattern for all-caps.
+     *
+     * @return The pattern.
+     */
+    public static Pattern getPattern() {
+        return AllCapsFilter.pattern;
     }
 }

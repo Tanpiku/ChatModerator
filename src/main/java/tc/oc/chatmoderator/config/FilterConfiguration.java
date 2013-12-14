@@ -1,7 +1,6 @@
 package tc.oc.chatmoderator.config;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import tc.oc.chatmoderator.ChatModeratorPlugin;

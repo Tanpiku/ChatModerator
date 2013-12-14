@@ -6,7 +6,6 @@ import org.joda.time.Instant;
 import tc.oc.chatmoderator.violations.Violation;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Called when a player posts a message with a large amount of repeated characters.

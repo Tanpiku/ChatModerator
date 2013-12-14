@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 
-import tc.oc.chatmoderator.ChatModeratorPlugin;
 import tc.oc.chatmoderator.PlayerManager;
 
 import javax.annotation.Nullable;

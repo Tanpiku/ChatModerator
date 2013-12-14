@@ -113,6 +113,9 @@ public final class PlayerViolationManager {
         return this.lastMessageTime;
     }
 
+    /**
+     * Stores a level and a set of violations per Violation type.
+     */
     public class ViolationSet {
         /**
          * The level that the violation is worth
@@ -125,7 +128,7 @@ public final class PlayerViolationManager {
         private final Set<Violation> violations = new HashSet<>();
 
         /**
-             * Represents the callable constructor of ViolationSet
+         * Represents the callable constructor of ViolationSet
          * @param level The level for that violation
          */
         public ViolationSet(double level) {
