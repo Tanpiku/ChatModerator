@@ -6,10 +6,3 @@ target/
 *.jar
 *.war
 *.ear
-
-# Eclipse
-.settings/
-bin/
-.classpath
-.project
-
