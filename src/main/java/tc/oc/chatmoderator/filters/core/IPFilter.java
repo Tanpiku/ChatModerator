@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 public class IPFilter extends Filter {
 
-    private static final Pattern regexPattern = Pattern.compile("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
+    private static final Pattern pattern = Pattern.compile("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
 
     public IPFilter(PlayerManager playerManager, Permission exemptPermission, int priority) {
         super(playerManager, exemptPermission, priority);
@@ -48,7 +48,7 @@ public class IPFilter extends Filter {
 //      if(((Player) player).hasPermission(this.getExemptPermission()))
 //          return message;
      
-        Matcher matcher = regexPattern.matcher(Preconditions.checkNotNull(message));
+        Matcher matcher = pattern.matcher(Preconditions.checkNotNull(message));
         Set<InetAddress> ipAddresses = new HashSet<>();
 
         PlayerViolationManager violations = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "Player"));
@@ -74,7 +74,12 @@ public class IPFilter extends Filter {
         return message;
     }
 
-    public static Pattern getRegexPattern() {
-        return regexPattern;
+    /**
+     * Get the pattern for IP filter
+     *
+     * @return The pattern.
+     */
+    public static Pattern getPattern() {
+        return pattern;
     }
 }

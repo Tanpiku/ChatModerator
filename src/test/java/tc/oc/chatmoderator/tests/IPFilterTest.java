@@ -26,7 +26,7 @@ public final class IPFilterTest extends TestCase {
     public void testIPRegex() throws Exception {
         for (int i = 0; i < IPFilterTest.TEST_ITERATIONS; i++) {
             String ipAddress = this.random.nextInt(255) + "." + this.random.nextInt(255) + "." + this.random.nextInt(255) + "." + this.random.nextInt(255);
-            assertTrue("testIPRegex() failed with IP address: [" + ipAddress + "]", IPFilter.getRegexPattern().matcher(ipAddress).matches());
+            assertTrue("testIPRegex() failed with IP address: [" + ipAddress + "]", IPFilter.getPattern().matcher(ipAddress).matches());
         }
     }
 }
