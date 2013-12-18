@@ -29,7 +29,6 @@ public class AllCapsViolation extends Violation {
         this.upperCaseWords = ImmutableSet.copyOf(Preconditions.checkNotNull(upperCaseWords));
     }
 
-
     /**
      * Gets the words that were uppercase.
      *

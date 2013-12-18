@@ -8,6 +8,7 @@ import org.joda.time.Instant;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
+import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.core.DuplicateMessageViolation;
 
 import javax.annotation.Nullable;
@@ -35,7 +36,7 @@ public class DuplicateMessageFilter extends Filter {
      * @return
      */
     @Override
-    public @Nullable String filter(String message, OfflinePlayer player) {
+    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player) {
         PlayerViolationManager violationSet = this.getPlayerManager().getViolationSet(player);
 
         Instant now = Instant.now();
@@ -49,8 +50,8 @@ public class DuplicateMessageFilter extends Filter {
         }
 
         if (lastMessage.withDurationAdded(delay, 1).isAfter(now)) {
-            violationSet.addViolation(new DuplicateMessageViolation(Instant.now(), player, message, difference));
-            message = null;
+            violationSet.addViolation(new DuplicateMessageViolation(message.getTimeSent(), player, message.getOriginal(), difference));
+            message.setFixed(null);
         } else {
             violationSet.setLastMessageTime(now);
         }

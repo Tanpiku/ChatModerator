@@ -7,6 +7,7 @@ import org.joda.time.Instant;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
+import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.RepeatedCharactersViolation;
 
@@ -41,19 +42,17 @@ public class RepeatedCharactersFilter extends Filter {
      */
     @Nullable
     @Override
-    public String filter(String message, OfflinePlayer player) {
-        Matcher matcher = this.pattern.matcher(message);
+    public FixedMessage filter(FixedMessage message, OfflinePlayer player) {
+        Matcher matcher = this.pattern.matcher(message.getFixed());
         List<String> repeatedCharacters = new ArrayList<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "player"));
-        Violation violation = new RepeatedCharactersViolation(Instant.now(), player, message, violationManager.getViolationLevel(RepeatedCharactersViolation.class), repeatedCharacters);
+        Violation violation = new RepeatedCharactersViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(RepeatedCharactersViolation.class), repeatedCharacters);
 
         while(matcher.find()) {
             repeatedCharacters.add(matcher.group());
 
-            if(violation.isFixed()) {
-                message = message.replaceFirst(matcher.group(), matcher.group().charAt(0) + "");
-            }
+            message.setFixed(message.getFixed().replaceFirst(matcher.group(), matcher.group().charAt(0) + ""));
         }
 
         if(repeatedCharacters.size() > 0) {

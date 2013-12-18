@@ -8,8 +8,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import org.joda.time.Instant;
 import tc.oc.chatmoderator.ChatModeratorPlugin;
 import tc.oc.chatmoderator.filters.Filter;
+import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.violations.Violation;
 
 import java.util.*;
 
@@ -81,17 +84,28 @@ public final class ChatModeratorListener implements Listener {
         String message = Preconditions.checkNotNull(event, "Event").getMessage();
         OfflinePlayer player = Bukkit.getOfflinePlayer(event.getPlayer().getName());
 
+        FixedMessage fixedMessage = new FixedMessage(message, Instant.now());
+        fixedMessage.setFixed(fixedMessage.getOriginal());
+
         for (Filter filter : this.filters) {
             if (message == null || message.equals(""))
                 break;
 
-            message = filter.filter(message, player);
+            filter.filter(fixedMessage, player);
         }
 
-        if (message != null) {
-            event.setMessage(message);
-        } else {
-            event.setCancelled(true);
+        event.setMessage(fixedMessage.getOriginal());
+
+        for (Violation v : plugin.getPlayerManager().getViolationSet(player).getViolationsForTime(fixedMessage.getTimeSent())) {
+            if (v.isCancelled()) {
+                event.setMessage(null);
+                event.setCancelled(true);
+                break;
+            }
+
+            if (v.isFixed()) {
+                event.setMessage(fixedMessage.getFixed());
+            }
         }
     }
 }

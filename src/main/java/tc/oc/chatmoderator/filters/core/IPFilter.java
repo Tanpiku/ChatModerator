@@ -12,6 +12,7 @@ import org.joda.time.Instant;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
+import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ServerIPViolation;
 
@@ -44,15 +45,15 @@ public class IPFilter extends Filter {
      */
     @Nullable
     @Override
-    public String filter(String message, final OfflinePlayer player) {
+    public FixedMessage filter(FixedMessage message, final OfflinePlayer player) {
 //      if(((Player) player).hasPermission(this.getExemptPermission()))
 //          return message;
      
-        Matcher matcher = pattern.matcher(Preconditions.checkNotNull(message));
+        Matcher matcher = pattern.matcher(Preconditions.checkNotNull(message.getFixed()));
         Set<InetAddress> ipAddresses = new HashSet<>();
 
         PlayerViolationManager violations = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "Player"));
-        Violation violation = new ServerIPViolation(Instant.now(), player, message, violations.getViolationLevel(ServerIPViolation.class), ImmutableSet.copyOf(ipAddresses));               
+        Violation violation = new ServerIPViolation(message.getTimeSent(), player, message.getOriginal(), violations.getViolationLevel(ServerIPViolation.class), ImmutableSet.copyOf(ipAddresses));
         
         while (matcher.find()) {
             try {
@@ -61,10 +62,7 @@ public class IPFilter extends Filter {
                 e.printStackTrace();
             }
 
-            if(violation.isFixed()) {
-                message = message.replaceFirst(matcher.group(), ChatColor.MAGIC + matcher.group().substring(0, 7) + ChatColor.RESET);
-            }
-
+            message.setFixed(message.getFixed().replaceFirst(matcher.group(), ChatColor.MAGIC + matcher.group().substring(0, 7) + ChatColor.RESET));
         }
 
         if (ipAddresses.size() > 0) {

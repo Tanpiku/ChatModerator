@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 
 import tc.oc.chatmoderator.PlayerManager;
+import tc.oc.chatmoderator.messages.FixedMessage;
 
 import javax.annotation.Nullable;
 
@@ -61,6 +62,6 @@ public abstract class Filter implements Comparable<Filter> {
      * @param player  The player that sent the message.
      */
     @Nullable
-    public abstract String filter(String message, final OfflinePlayer player);
+    public abstract FixedMessage filter(FixedMessage message, final OfflinePlayer player);
 
 }

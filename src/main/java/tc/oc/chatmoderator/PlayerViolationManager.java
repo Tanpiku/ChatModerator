@@ -99,10 +99,27 @@ public final class PlayerViolationManager {
      * @param type The type of violation to get.
      * @return The violations of the specified type.
      */
-    public Set<Violation> getViolationsFor(final Class<? extends Violation> type) {
+    public Set<Violation> getViolationsForType(final Class<? extends Violation> type) {
         Set<Violation> violations = this.violations.get(type).getViolations();
 
         return Collections.unmodifiableSet(violations);
+    }
+
+    /**
+     * Gets all violations that occurred at the specified time.
+     *
+     * @param time The {@link org.joda.time.Instant} to search for.
+     * @return The violations that happened at the specified time.
+     */
+    public Set<Violation> getViolationsForTime(Instant time) {
+        Set<Violation> violations = new HashSet<Violation>();
+
+        for(Violation v : this.getAllViolations()) {
+            if(v.getTime().equals(time))
+                violations.add(v);
+        }
+
+        return violations;
     }
 
     public void setLastMessageTime(Instant time) {

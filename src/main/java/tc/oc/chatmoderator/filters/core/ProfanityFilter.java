@@ -8,6 +8,7 @@ import org.joda.time.Instant;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.WeightedFilter;
+import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
 
@@ -44,32 +45,30 @@ public class ProfanityFilter extends WeightedFilter {
      */
     @Nullable
     @Override
-    public String filter(String message, OfflinePlayer player) {
+    public FixedMessage filter(FixedMessage message, OfflinePlayer player) {
         Matcher matcher;
         Set<String> profanities = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
-        Violation violation = new ProfanityViolation(Instant.now(), player, message, profanities);
+        Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities);
 
         for(Pattern pattern : this.getWeights().keySet()) {
-            matcher = pattern.matcher(Preconditions.checkNotNull(message, "message"));
+            matcher = pattern.matcher(Preconditions.checkNotNull(message.getFixed(), "message"));
 
             while (matcher.find()) {
                 String currentGroup = matcher.group();
 
                 profanities.add(matcher.group());
 
-                if (violation.isFixed()) {
-                    StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new StringBuilder();
 
-                    builder.append(matcher.group().charAt(0));
-                    builder.append(ChatColor.MAGIC + "");
-                    builder.append(matcher.group().substring(1,matcher.group().length() - 1));
-                    builder.append(ChatColor.RESET + "");
-                    builder.append(matcher.group().charAt(matcher.group().length() - 1));
+                builder.append(matcher.group().charAt(0));
+                builder.append(ChatColor.MAGIC + "");
+                builder.append(matcher.group().substring(1,matcher.group().length() - 1));
+                builder.append(ChatColor.RESET + "");
+                builder.append(matcher.group().charAt(matcher.group().length() - 1));
 
-                    message = message.replaceFirst(currentGroup, builder.toString());
-                }
+                message.setFixed(message.getFixed().replaceFirst(currentGroup, builder.toString()));
             }
 
             // TODO: Properly set the level for this violation
