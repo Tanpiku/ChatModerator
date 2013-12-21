@@ -5,7 +5,17 @@ author: Overcast Network
 website: ${project.url}
 main: ${plugin.mainClass}
 prefix: ${plugin.prefix}
+
+commands:
+    chatmoderator:
+        description: Reloads ChatModerator
+        usage: /<command>
+        aliases: [cm]
+
 permissions:
+    chatmoderator.reload:
+        description: Allows a player to reload ChatModerator
+        default: op
     chatmoderator.filter.exempt.*:
         description: Exempts a player from all filters
         default: false

@@ -1,6 +1,9 @@
 package tc.oc.chatmoderator;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -73,6 +76,21 @@ public class ChatModeratorPlugin extends JavaPlugin {
         for (Listener listener : this.listeners) {
             Bukkit.getPluginManager().registerEvents(listener, this);
         }
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(!sender.hasPermission("chatmoderator.reload")) {
+            sender.sendMessage(ChatColor.RED + "No permission.");
+            return true;
+        }
+
+        this.onDisable();
+        this.onEnable();
+
+        sender.sendMessage(ChatColor.AQUA + "[ChatModerator] - " + ChatColor.DARK_GREEN + "Successfully reloaded config and registered all filters.");
+
+        return true;
     }
 
     /**
