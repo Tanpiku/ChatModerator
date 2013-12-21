@@ -88,9 +88,6 @@ public final class ChatModeratorListener implements Listener {
         fixedMessage.setFixed(fixedMessage.getOriginal());
 
         for (Filter filter : this.filters) {
-            if (message == null || message.equals(""))
-                break;
-
             filter.filter(fixedMessage, player);
         }
 
@@ -107,5 +104,8 @@ public final class ChatModeratorListener implements Listener {
                 event.setMessage(fixedMessage.getFixed());
             }
         }
+
+        if (event.getMessage() == null)
+            event.setCancelled(true);
     }
 }
