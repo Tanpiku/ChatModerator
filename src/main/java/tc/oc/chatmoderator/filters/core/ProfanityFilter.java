@@ -50,9 +50,9 @@ public class ProfanityFilter extends WeightedFilter {
         Set<String> profanities = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
-        Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities);
 
         for(Pattern pattern : this.getWeights().keySet()) {
+            Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities);
             matcher = pattern.matcher(Preconditions.checkNotNull(message.getFixed(), "message"));
 
             while (matcher.find()) {
@@ -74,11 +74,13 @@ public class ProfanityFilter extends WeightedFilter {
             // TODO: Properly set the level for this violation
             violation.setLevel(super.getWeightFor(pattern));
 
-            matcher = null;
-        }
+            if (profanities.size() > 0) {
+                violationManager.addViolation(violation);
+            }
 
-        if (profanities.size() > 0) {
-            violationManager.addViolation(violation);
+            profanities.clear();
+
+            matcher = null;
         }
 
         return message;
