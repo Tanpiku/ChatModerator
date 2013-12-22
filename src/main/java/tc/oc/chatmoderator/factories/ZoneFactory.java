@@ -1,4 +1,4 @@
-package tc.oc.chatmoderator.config;
+package tc.oc.chatmoderator.factories;
 
 import com.google.common.base.Preconditions;
 import tc.oc.chatmoderator.ChatModeratorPlugin;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Factory class for parsing the configuration for zones
  */
-public class ZoneConfiguration {
+public class ZoneFactory {
 
     /**
      * The base ChatModerator plugin.
@@ -39,12 +39,12 @@ public class ZoneConfiguration {
     private boolean enabled;
 
     /**
-     * Insatiable ZoneConfiguration constructor.
+     * Insatiable ZoneFactory constructor.
      *
      * @param plugin The plugin to parse from.
      * @param path The path for the parser to parse on.
      */
-    public ZoneConfiguration(final ChatModeratorPlugin plugin, final String path) {
+    public ZoneFactory(final ChatModeratorPlugin plugin, final String path) {
         Preconditions.checkArgument(plugin.isEnabled(), "Plugin not enabled!");
 
         this.plugin = Preconditions.checkNotNull(plugin, "plugin");
@@ -60,7 +60,7 @@ public class ZoneConfiguration {
      *
      * @return The state of this factory class.
      */
-    public ZoneConfiguration parse() {
+    public ZoneFactory parse() {
         enabled = plugin.getConfig().getBoolean(this.path + ".enabled");
 
         for(String s : plugin.getConfig().getStringList(this.path + ".excluded-filters")) {

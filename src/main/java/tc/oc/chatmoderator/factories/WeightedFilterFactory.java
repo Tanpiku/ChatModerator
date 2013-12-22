@@ -1,4 +1,4 @@
-package tc.oc.chatmoderator.config;
+package tc.oc.chatmoderator.factories;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Utility class that serves the purpose to parse and set-up configuration sections for filters.
  */
-public class FilterConfiguration {
+public class WeightedFilterFactory {
 
     /**
      * The base plugin.
@@ -30,12 +30,12 @@ public class FilterConfiguration {
     private HashMap<Pattern, Double> weights;
 
     /**
-     * Publicly instantiable variant of the FilterConfiguration.
+     * Publicly instantiable variant of the WeightedFilterFactory.
      *
      * @param plugin The base plugin.
      * @param path The path to search in for parameters.
      */
-    public FilterConfiguration(final ChatModeratorPlugin plugin, final String path) {
+    public WeightedFilterFactory(final ChatModeratorPlugin plugin, final String path) {
         Preconditions.checkArgument(plugin.isEnabled(), "Plugin not enabled");
 
         this.plugin = plugin;
@@ -47,9 +47,9 @@ public class FilterConfiguration {
     /**
      * Parses the configuration and lets debuggers know of its findings.
      *
-     * @return The current state of the FilterConfiguration object.
+     * @return The current state of the WeightedFilterFactory object.
      */
-    public FilterConfiguration build() {
+    public WeightedFilterFactory build() {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection(path);
 
         for(Map.Entry<String, Object> entry : section.getValues(false).entrySet()) {

@@ -10,8 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import tc.oc.chatmoderator.config.FilterConfiguration;
-import tc.oc.chatmoderator.config.ZoneConfiguration;
+import tc.oc.chatmoderator.factories.WeightedFilterFactory;
+import tc.oc.chatmoderator.factories.ZoneFactory;
 import tc.oc.chatmoderator.filters.core.*;
 import tc.oc.chatmoderator.listeners.ChatModeratorListener;
 import tc.oc.chatmoderator.listeners.DebugListener;
@@ -42,7 +42,8 @@ public class ChatModeratorPlugin extends JavaPlugin {
     public void onDisable() {
         for (Listener listener : this.listeners) {
             if (listener instanceof ChatModeratorListener) {
-                ((ChatModeratorListener) listener).unRegisterAll();
+                ((ChatModeratorListener) listener).unRegisterAllZones();
+                ((ChatModeratorListener) listener).unRegisterAllFilters();
             }
             HandlerList.unregisterAll(listener);
         }
@@ -104,7 +105,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
     private void setUpFilters(ChatModeratorListener moderatorListener) {
         moderatorListener.registerFilter(new DuplicateMessageFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.duplicatemessage.exempt"), getConfig().getLong("config.delay-between-messages"), getConfig().getInt("filters.duplicate-messages.priority")));
         moderatorListener.registerFilter(new IPFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.ipfilter.exempt"), getConfig().getInt("filters.server-ip.priority")));
-        moderatorListener.registerFilter(new ProfanityFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.profanity.exempt"), (new FilterConfiguration(this, "filters.profanity.expressions")).build().getWeights(), getConfig().getInt("filters.profanity.priority")));
+        moderatorListener.registerFilter(new ProfanityFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.profanity.exempt"), (new WeightedFilterFactory(this, "filters.profanity.expressions")).build().getWeights(), getConfig().getInt("filters.profanity.priority")));
         moderatorListener.registerFilter(new AllCapsFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.all-caps.exempt"), getConfig().getInt("filters.all-caps.priority")));
         moderatorListener.registerFilter(new RepeatedCharactersFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.repeated.exempt"), getConfig().getInt("filters.repeated-characters.count"), getConfig().getInt("filters.repeated-characters.priority")));
     }
@@ -115,9 +116,9 @@ public class ChatModeratorPlugin extends JavaPlugin {
      * @param moderatorListener The {@link tc.oc.chatmoderator.listeners.ChatModeratorListener} to work off of.
      */
     private void setUpZones(ChatModeratorListener moderatorListener) {
-        moderatorListener.registerZone(ZoneType.CHAT, new ZoneConfiguration(this, "zones.chat").parse().getZone());
-        moderatorListener.registerZone(ZoneType.SIGN, new ZoneConfiguration(this, "zones.sign").parse().getZone());
-        moderatorListener.registerZone(ZoneType.ANVIL, new ZoneConfiguration(this, "zones.anvil").parse().getZone());
+        moderatorListener.registerZone(ZoneType.CHAT, new ZoneFactory(this, "zones.chat").parse().getZone());
+        moderatorListener.registerZone(ZoneType.SIGN, new ZoneFactory(this, "zones.signs").parse().getZone());
+        moderatorListener.registerZone(ZoneType.ANVIL, new ZoneFactory(this, "zones.anvil").parse().getZone());
     }
 
     /**

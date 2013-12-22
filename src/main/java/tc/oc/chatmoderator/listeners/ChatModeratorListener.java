@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import org.joda.time.Instant;
@@ -90,7 +91,7 @@ public final class ChatModeratorListener implements Listener {
     /**
      * Un-registers all filters.
      */
-    public void unRegisterAll() {
+    public void unRegisterAllFilters() {
         for(Iterator<Filter> it = filters.iterator(); it.hasNext(); ) {
             Filter f = it.next();
 
@@ -116,6 +117,18 @@ public final class ChatModeratorListener implements Listener {
         }
     }
 
+    private List<Filter> getFiltersForZone(Zone zone) {
+        List<Filter> filters = new ArrayList<>();
+
+        for (Filter filter : this.filters) {
+            if (!(zone.getExcludedFilters().contains(filter.getClass()))) {
+                filters.add(filter);
+            }
+        }
+
+        return filters;
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
         Zone chatZone = this.zones.get(ZoneType.CHAT);
@@ -133,12 +146,7 @@ public final class ChatModeratorListener implements Listener {
             plugin.getLogger().info(klass.getSimpleName());
         }
 
-        for (Filter filter : this.filters) {
-            if(chatZone.getExcludedFilters().contains(filter.getClass())) {
-                plugin.getLogger().info("Skipping filter: " + filter.getClass().getSimpleName());
-                continue;
-            }
-
+        for (Filter filter : this.getFiltersForZone(chatZone)) {
             filter.filter(fixedMessage, player);
         }
 
@@ -158,5 +166,53 @@ public final class ChatModeratorListener implements Listener {
 
         if (event.getMessage() == null)
             event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onSignEdit(SignChangeEvent event) {
+        Zone signZone = this.zones.get(ZoneType.SIGN);
+
+        if(!(signZone.isEnabled()))
+            return;
+
+        OfflinePlayer player;
+
+        try {
+            player = (OfflinePlayer) event.getPlayer();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        Instant signCreateInstant;
+
+        for (int i = 0; i < event.getLines().length; i++) {
+            signCreateInstant = Instant.now();
+
+            FixedMessage message = new FixedMessage(event.getLine(i), signCreateInstant);
+            message.setFixed(message.getOriginal());
+
+            if (event.getLine(i).equals("") || event.getLine(i) == null)
+                continue;
+
+            for (Filter filter : this.getFiltersForZone(signZone)) {
+                filter.filter(message, player);
+            }
+
+            event.setLine(i, message.getOriginal());
+
+            for (Violation v : plugin.getPlayerManager().getViolationSet(player).getViolationsForTime(signCreateInstant)) {
+                if (v.isCancelled()) {
+                    event.setLine(i, null);
+                    event.setCancelled(true);
+                    break;
+                }
+
+                if (v.isFixed()) {
+                    event.setLine(i, message.getFixed());
+                }
+            }
+
+        }
     }
 }
