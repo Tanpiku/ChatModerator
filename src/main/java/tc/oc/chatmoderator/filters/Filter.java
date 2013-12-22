@@ -48,9 +48,13 @@ public abstract class Filter implements Comparable<Filter> {
     }
 
     public int compareTo(Filter f1) {
-        if(this.getPriority() > f1.getPriority()) return 1;
-        else if(this.getPriority() == f1.getPriority()) return 0;
-        else return -1;
+        if(this.getPriority() > f1.getPriority()) {
+            return 1;
+        } else if(this.getPriority() == f1.getPriority()) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
     /**

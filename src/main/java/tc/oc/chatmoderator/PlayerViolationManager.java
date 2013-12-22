@@ -120,8 +120,9 @@ public final class PlayerViolationManager {
         Set<Violation> violations = new HashSet<Violation>();
 
         for(Violation v : this.getAllViolations()) {
-            if(v.getTime().equals(time))
+            if(v.getTime().equals(time)) {
                 violations.add(v);
+            }
         }
 
         return violations;
