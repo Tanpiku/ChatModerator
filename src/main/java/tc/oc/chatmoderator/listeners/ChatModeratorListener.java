@@ -13,6 +13,8 @@ import tc.oc.chatmoderator.ChatModeratorPlugin;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
+import tc.oc.chatmoderator.zones.Zone;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.util.*;
 
@@ -22,6 +24,7 @@ import java.util.*;
 public final class ChatModeratorListener implements Listener {
     private final ChatModeratorPlugin plugin;
     private List<Filter> filters = new ArrayList<>();
+    private Map<ZoneType, Zone> zones = new HashMap<>();
 
     public ChatModeratorListener(final ChatModeratorPlugin plugin) {
         Preconditions.checkArgument(Preconditions.checkNotNull(plugin, "Plugin").isEnabled(), "Plugin not loaded.");
@@ -38,6 +41,40 @@ public final class ChatModeratorListener implements Listener {
         plugin.getLogger().info("Registered filter: " + filter.getClass().getSimpleName());
 
         Collections.sort(this.filters);
+    }
+
+    /**
+     * Registers a zone.
+     *
+     * @param type The type of zone being registered.
+     * @param zone The zone associated with that type.
+     */
+    public void registerZone(final ZoneType type, final Zone zone) {
+        if (this.zones.containsKey(type))
+            throw new IllegalArgumentException("ChatModeratorListener already contains this zone!");
+
+        this.zones.put(type, zone);
+        plugin.getLogger().info("Registered zone: " + type.name());
+    }
+
+    /**
+     * Removes a single zone for a specific type.
+     *
+     * @param type The type of zone being removed.
+     */
+    public void unRegisterZone(final ZoneType type) {
+        this.zones.remove(type);
+        plugin.getLogger().info("Unregistered zone: " + type.name());
+    }
+
+    /**
+     * Un-registers all zones.
+     */
+    public void unRegisterAllZones() {
+        for(ZoneType t : this.zones.keySet()) {
+            this.zones.remove(t);
+            plugin.getLogger().info("Unregistered zone: " + t.name());
+        }
     }
 
     /**
@@ -81,13 +118,27 @@ public final class ChatModeratorListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
+        Zone chatZone = this.zones.get(ZoneType.CHAT);
+
+        if (!(chatZone.isEnabled()))
+            return;
+
         String message = Preconditions.checkNotNull(event, "Event").getMessage();
         OfflinePlayer player = Bukkit.getOfflinePlayer(event.getPlayer().getName());
 
         FixedMessage fixedMessage = new FixedMessage(message, Instant.now());
         fixedMessage.setFixed(fixedMessage.getOriginal());
 
+        for(Class<? extends Filter> klass : chatZone.getExcludedFilters()) {
+            plugin.getLogger().info(klass.getSimpleName());
+        }
+
         for (Filter filter : this.filters) {
+            if(chatZone.getExcludedFilters().contains(filter.getClass())) {
+                plugin.getLogger().info("Skipping filter: " + filter.getClass().getSimpleName());
+                continue;
+            }
+
             filter.filter(fixedMessage, player);
         }
 

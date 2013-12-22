@@ -11,9 +11,11 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import tc.oc.chatmoderator.config.FilterConfiguration;
+import tc.oc.chatmoderator.config.ZoneConfiguration;
 import tc.oc.chatmoderator.filters.core.*;
 import tc.oc.chatmoderator.listeners.ChatModeratorListener;
 import tc.oc.chatmoderator.listeners.DebugListener;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -69,7 +71,8 @@ public class ChatModeratorPlugin extends JavaPlugin {
         // Initialize the listener, add filters as necessary
         ChatModeratorListener moderatorListener = new ChatModeratorListener(this);
         setUpFilters(moderatorListener);
-        
+        setUpZones(moderatorListener);
+
         this.listeners.add(moderatorListener);
 
         // And register all the events.
@@ -105,7 +108,18 @@ public class ChatModeratorPlugin extends JavaPlugin {
         moderatorListener.registerFilter(new AllCapsFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.all-caps.exempt"), getConfig().getInt("filters.all-caps.priority")));
         moderatorListener.registerFilter(new RepeatedCharactersFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.repeated.exempt"), getConfig().getInt("filters.repeated-characters.count"), getConfig().getInt("filters.repeated-characters.priority")));
     }
-    
+
+    /**
+     * Sets up all the zones for the ChatModeratorListener.
+     *
+     * @param moderatorListener The {@link tc.oc.chatmoderator.listeners.ChatModeratorListener} to work off of.
+     */
+    private void setUpZones(ChatModeratorListener moderatorListener) {
+        moderatorListener.registerZone(ZoneType.CHAT, new ZoneConfiguration(this, "zones.chat").parse().getZone());
+        moderatorListener.registerZone(ZoneType.SIGN, new ZoneConfiguration(this, "zones.sign").parse().getZone());
+        moderatorListener.registerZone(ZoneType.ANVIL, new ZoneConfiguration(this, "zones.anvil").parse().getZone());
+    }
+
     /**
      * Gets the player manager.
      *

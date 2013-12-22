@@ -2,6 +2,17 @@ config:
     delay-between-messages: 1000
 debug:
     enabled: false
+zones:
+    chat:
+        enabled: true
+        excluded-filters:
+    signs:
+        enabled: true
+        excluded-filters:
+            - duplicate-messages
+    anvil:
+        enabled: false
+        excluded-filters:
 filters:
     duplicate-messages:
         default-level: 10
