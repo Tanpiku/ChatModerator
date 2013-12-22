@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
-import org.joda.time.Instant;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.WeightedFilter;
