@@ -75,7 +75,12 @@ public final class PlayerViolationManager {
 
         violations.add(violation);
         
-        Bukkit.getServer().getPluginManager().callEvent(new ViolationAddEvent(violation.getPlayer(), violation));
+        Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("ChatModerator"), new Runnable() {
+            @Override
+            public void run() {
+                Bukkit.getServer().getPluginManager().callEvent(new ViolationAddEvent(violation.getPlayer(), violation));
+            }
+        });
     }
 
     /**
