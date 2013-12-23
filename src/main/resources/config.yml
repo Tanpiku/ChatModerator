@@ -31,37 +31,43 @@ filters:
         default-level: 10
         priority: 4
         expressions:
-            "f+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*[ck]*[^a-zA-Z\\s]*[ck]+": # "fuck"
+            "\\bf+uck+|f+uck+\\b": # "fuck"
                 level: 30
-            "w+[^a-zA-Z\\s]*a+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*[ck]+": # "wank"
+            "\\bw+ank+|w+ank+\\b": # "wank"
                 level: 15
-            "d+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*c+[^a-zA-Z\\s]*[ck]+": # "dick"
+            "\\bd+ick+|d+ick+\\b": # "dick"
                 level: 20
-            "[ck]+[^a-zA-Z\\s]*o+[^a-zA-Z\\s]*[ck]+[^a-zA-Z\\s]*[ck]+": # "cock"
+            "\\bc+ock+|c+ock+\\b": # "cock"
                 level: 22
-            "p+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*s+": # "penis"
+            "\\bp+enis+|p+enis+\\b": # "penis"
                 level: 20
-            "s+[^a-zA-Z\\s]*h+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*[tz]+": # "shit"
+            "\\bs+hit+|s+hit+\\b": # "shit"
                 level: 10
-            "p+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+": # "piss"
+            "\\bp+is+|p+is+\\b": # "piss"
                 level: 7
-            "s+[^a-zA-Z\\s]*[ck]+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*t+": # "skeet"
+            "\\bs+keet+|s+keet+\\b": # "skeet"
                 level: 13
-            "b+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*c+[^a-zA-Z\\s]*h+": # "bitch"
+            "\\bb+itch+|b+itch+\\b": # "bitch"
                 level: 15
-            "t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*s+": # "tits"
+            "\\bt+its+|t+its+\\b": # "tits"
                 level: 12
-            "t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*s+": # "titties"
+            "\\bt+itties+|t+itties+\\b": # "titties"
                 level: 12
-            "p+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*[yie]+": # "pussy"
+            "\\bp+ussy+|p+ussy+\\b": # "pussy"
                 level: 20
-            "[kc]+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*t+": # "cunt"
+            "\\bc+unt+|c+unt+\\b": # "cunt"
                 level: 25
-            "t+[^a-zA-Z\\s]*w+[^a-zA-Z\\s]*a+[^a-zA-Z\\s]*t+": # "twat"
+            "\\bt+wat+|t+wat+\\b": # "twat"
                 level: 12
-            "[ck]+[^a-zA-Z\\s]*l+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+": # "clit"
+            "\\bc+lit+|c+lit+\\b": # "clit"
                 level: 15
-            "a+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+": # "ass"
+            "\\ba+ss+|a+ss+\\b": # "ass"
                 level: 10
-            "[ck]+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*m+": # "cum"
+            "\\bc+um+|c+um+\\b": # "cum"
                 level: 22
+            "\\bn+igger+|n+igger+\\b": # "nigger"
+                level: 30
+            "\\bf+aggot+|f+aggot+\\b": # "faggot"
+                level: 25
+            "\\bq+ueer+|q+ueer+\\b": # "queer"
+                level: 25

@@ -24,23 +24,26 @@ public class ProfanityTest extends TestCase {
     public void setUp() {
         this.profanity = new HashMap<>();
 
-        this.profanity.put(Pattern.compile("f+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*[ck]*[^a-zA-Z\\s]*[ck]+"), "fuck");
-        this.profanity.put(Pattern.compile("w+[^a-zA-Z\\s]*a+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*[ck]+"), "wank");
-        this.profanity.put(Pattern.compile("d+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*c+[^a-zA-Z\\s]*[ck]+"), "dick");
-        this.profanity.put(Pattern.compile("[ck]+[^a-zA-Z\\s]*o+[^a-zA-Z\\s]*[ck]+[^a-zA-Z\\s]*[ck]+"), "cock");
-        this.profanity.put(Pattern.compile("p+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*s+"), "penis");
-        this.profanity.put(Pattern.compile("s+[^a-zA-Z\\s]*h+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*[tz]+"), "shit");
-        this.profanity.put(Pattern.compile("p+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+"), "piss");
-        this.profanity.put(Pattern.compile("s+[^a-zA-Z\\s]*[ck]+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*t+"), "skeet");
-        this.profanity.put(Pattern.compile("b+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*c+[^a-zA-Z\\s]*h+"), "bitch");
-        this.profanity.put(Pattern.compile("t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*s+"), "tits");
-        this.profanity.put(Pattern.compile("t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*t+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*e+[^a-zA-Z\\s]*s+"), "titties");
-        this.profanity.put(Pattern.compile("p+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*[yie]+"), "pussy");
-        this.profanity.put(Pattern.compile("[kc]+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*n+[^a-zA-Z\\s]*t+"), "cunt");
-        this.profanity.put(Pattern.compile("t+[^a-zA-Z\\s]*w+[^a-zA-Z\\s]*a+[^a-zA-Z\\s]*t+"), "twat");
-        this.profanity.put(Pattern.compile("[ck]+[^a-zA-Z\\s]*l+[^a-zA-Z\\s]*i+[^a-zA-Z\\s]*t+"), "clit");
-        this.profanity.put(Pattern.compile("a+[^a-zA-Z\\s]*s+[^a-zA-Z\\s]*s+"), "ass");
-        this.profanity.put(Pattern.compile("[ck]+[^a-zA-Z\\s]*u+[^a-zA-Z\\s]*m+"), "cum");
+        this.profanity.put(Pattern.compile("\\bf+uck+|f+uck+\\b"), "fuck");
+        this.profanity.put(Pattern.compile("\\bw+ank+|w+ank+\\b"), "wank");
+        this.profanity.put(Pattern.compile("\\bd+ick+|d+ick+\\b"), "dick");
+        this.profanity.put(Pattern.compile("\\bc+ock+|c+ock+\\b"), "cock");
+        this.profanity.put(Pattern.compile("\\bp+enis+|p+enis+\\b"), "penis");
+        this.profanity.put(Pattern.compile("\\bs+hit+|s+hit+\\b"), "shit");
+        this.profanity.put(Pattern.compile("\\bp+is+|p+is+\\b"), "piss");
+        this.profanity.put(Pattern.compile("\\bs+keet+|s+keet+\\b"), "skeet");
+        this.profanity.put(Pattern.compile("\\bb+itch+|b+itch+\\b"), "bitch");
+        this.profanity.put(Pattern.compile("\\bt+its+|t+its+\\b"), "tits");
+        this.profanity.put(Pattern.compile("\\bt+itties+|t+itties+\\b"), "titties");
+        this.profanity.put(Pattern.compile("\\bp+ussy+|p+ussy+\\b"), "pussy");
+        this.profanity.put(Pattern.compile("\\bc+unt+|c+unt+\\b"), "cunt");
+        this.profanity.put(Pattern.compile("\\bt+wat+|t+wat+\\b"), "twat");
+        this.profanity.put(Pattern.compile("\\bc+lit+|c+lit+\\b"), "clit");
+        this.profanity.put(Pattern.compile("\\ba+ss+|a+ss+\\b"), "ass");
+        this.profanity.put(Pattern.compile("\\bc+um+|c+um+\\b"), "cum");
+        this.profanity.put(Pattern.compile("\\bn+igger+|n+igger+\\b"), "nigger");
+        this.profanity.put(Pattern.compile("\\bf+aggot+|f+aggot+\\b"), "faggot");
+        this.profanity.put(Pattern.compile("\\bq+ueer+|q+ueer+\\b"), "queer");
     }
 
     @Test
