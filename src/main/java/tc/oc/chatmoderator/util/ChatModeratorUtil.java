@@ -32,11 +32,13 @@ public class ChatModeratorUtil {
         filters.put("repeated-characters", RepeatedCharactersFilter.class);
         filters.put("all-caps", AllCapsFilter.class);
         filters.put("profanity", ProfanityFilter.class);
+        filters.put("leet", LeetSpeakFilter.class);
 
         violations.put("server-ip", ServerIPViolation.class);
         violations.put("duplicate-messages", DuplicateMessageViolation.class);
         violations.put("repeated-characters", RepeatedCharactersViolation.class);
         violations.put("all-caps", AllCapsViolation.class);
         violations.put("profanity", ProfanityViolation.class);
+        violations.put("leet", LeetSpeakViolation.class);
     }
 }

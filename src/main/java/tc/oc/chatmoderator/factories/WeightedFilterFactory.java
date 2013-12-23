@@ -53,7 +53,7 @@ public class WeightedFilterFactory {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection(path);
 
         for(Map.Entry<String, Object> entry : section.getValues(false).entrySet()) {
-            Pattern pattern = Pattern.compile(entry.getKey());
+            Pattern pattern = Pattern.compile(entry.getKey(), Pattern.CASE_INSENSITIVE);
             Double value = ((MemorySection) entry.getValue()).getDouble("level", -1);
 
             if(plugin.getConfig().getBoolean("debug.enabled")) {

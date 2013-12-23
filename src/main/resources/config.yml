@@ -10,9 +10,7 @@ zones:
         enabled: true
         excluded-filters:
             - duplicate-messages
-    anvil:
-        enabled: false
-        excluded-filters:
+            - leet
 filters:
     duplicate-messages:
         default-level: 10
@@ -20,6 +18,106 @@ filters:
     server-ip:
         default-level: 4
         priority: 1
+    leet:
+        default-level: 2
+        priority: 4
+        dictionary:
+            A:
+                - '@'
+                - "^"
+                - '/\'
+                - '/-\'
+            B:
+                - "l3"
+                - "13"
+                - "P>"
+                - "|:"
+            C:
+                - "["
+                - "("
+                - "{"
+            D:
+                - "|)"
+                - "|>"
+                - "|o"
+            E:
+                - "[-"
+            F:
+                - "|="
+                - "/="
+                - "|#"
+            G:
+                - "C-"
+                - "(_+"
+            H:
+                - "#"
+                - "}{"
+                - "|-|"
+                - "[-]"
+                - ")-("
+                - "(-)"
+                - "/-/"
+            I:
+                - "]"
+            J:
+                - "]"
+                - "_|"
+                - "_/"
+            K:
+                - "|<"
+                - "|{"
+                - "|("
+            L:
+                - "|"
+                - "|_"
+            M:
+                - '/\/\'
+                - "|v|"
+                - '|\/|'
+                - "//."
+            N:
+                - '|\|'
+                - '/\/'
+                - "/V"
+                - "^/"
+            O:
+                - "()"
+                - "[]"
+            P:
+                - '|*'
+                - '|"'
+            Q:
+                - "()_"
+                - "(_,)"
+            R:
+                - '/2'
+                - 'l2'
+                - '|^'
+            S:
+            T:
+                - "-|-"
+            U:
+                - '|_|'
+                - 'L|'
+                - '(_)'
+            V:
+                - '\/'
+            W:
+                - 'VV'
+                - '\/\/'
+                - "\\'"
+                - "'//"
+                - '\|/'
+                - '\^/'
+            X:
+                - '}{'
+                - ')('
+            Y:
+                - "'/'"
+            Z:
+                - '~/_'
+                - '7_'
+                - '>_'
     repeated-characters:
         default-level: 10
         priority: 2
@@ -29,7 +127,7 @@ filters:
         priority: 3
     profanity:
         default-level: 10
-        priority: 4
+        priority: 5
         expressions:
             "\\bf+uck+|f+uck+\\b": # "fuck"
                 level: 30
@@ -66,6 +164,8 @@ filters:
             "\\bc+um+|c+um+\\b": # "cum"
                 level: 22
             "\\bn+igger+|n+igger+\\b": # "nigger"
+                level: 30
+            "\\bn+igga+|n+igga+\\b": # "nigga"
                 level: 30
             "\\bf+aggot+|f+aggot+\\b": # "faggot"
                 level: 25

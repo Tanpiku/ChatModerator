@@ -50,6 +50,7 @@ public final class PlayerViolationManager {
         this.violations.put(RepeatedCharactersViolation.class, new ViolationSet(pluginConfig.getDouble("filters.repeated-characters.default-level", 1)));
         this.violations.put(ProfanityViolation.class, new ViolationSet(pluginConfig.getDouble("filters.profanity.default-level", 1)));
         this.violations.put(AllCapsViolation.class, new ViolationSet(pluginConfig.getDouble("filters.all-caps.default-level", 1)));
+        this.violations.put(LeetSpeakViolation.class, new ViolationSet(pluginConfig.getDouble("filters.leet.default-level", 1)));
     }
     
     /**

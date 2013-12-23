@@ -69,6 +69,10 @@ public final class ChatModeratorListener implements Listener {
         fixedMessage.setFixed(fixedMessage.getOriginal());
 
         for (Filter filter : this.getFilterManager().getFiltersForZone(chatZone)) {
+            if (fixedMessage.getFixed() == null || fixedMessage.getFixed().equals("")) {
+                break;
+            }
+
             filter.filter(fixedMessage, player);
         }
 
