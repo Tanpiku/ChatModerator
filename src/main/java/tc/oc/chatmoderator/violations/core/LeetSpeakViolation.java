@@ -9,6 +9,9 @@ import tc.oc.chatmoderator.zones.ZoneType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Violation called when a user is speaking in "leet-speak".
+ */
 public class LeetSpeakViolation extends Violation {
 
     private List<String> words;
@@ -28,6 +31,11 @@ public class LeetSpeakViolation extends Violation {
         this.words = Preconditions.checkNotNull(words);
     }
 
+    /**
+     * Gets the words that were "leet" in nature.
+     *
+     * @return The l33t words.
+     */
     public List<String> getWords() {
         return this.words;
     }
