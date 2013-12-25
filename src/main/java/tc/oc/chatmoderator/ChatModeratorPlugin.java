@@ -11,6 +11,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import tc.oc.chatmoderator.factories.LeetSpeakFilterFactory;
+import tc.oc.chatmoderator.factories.TemplateFactory;
 import tc.oc.chatmoderator.factories.WeightedFilterFactory;
 import tc.oc.chatmoderator.factories.ZoneFactory;
 import tc.oc.chatmoderator.filters.core.*;
@@ -106,7 +107,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
     private void setUpFilters(ChatModeratorListener moderatorListener) {
         moderatorListener.getFilterManager().registerFilter(new DuplicateMessageFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.duplicatemessage.exempt"), getConfig().getLong("config.delay-between-messages"), getConfig().getInt("filters.duplicate-messages.priority")));
         moderatorListener.getFilterManager().registerFilter(new IPFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.ipfilter.exempt"), getConfig().getInt("filters.server-ip.priority")));
-        moderatorListener.getFilterManager().registerFilter(new ProfanityFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.profanity.exempt"), (new WeightedFilterFactory(this, "filters.profanity.expressions")).build().getWeights(), getConfig().getInt("filters.profanity.priority")));
+        moderatorListener.getFilterManager().registerFilter(new ProfanityFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.profanity.exempt"), (new TemplateFactory(this, "filters.profanity").build().getWeights()), getConfig().getInt("filters.profanity.priority")));
         moderatorListener.getFilterManager().registerFilter(new AllCapsFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.all-caps.exempt"), getConfig().getInt("filters.all-caps.priority")));
         moderatorListener.getFilterManager().registerFilter(new RepeatedCharactersFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.repeated.exempt"), getConfig().getInt("filters.repeated-characters.count"), getConfig().getInt("filters.repeated-characters.priority")));
         moderatorListener.getFilterManager().registerFilter(new LeetSpeakFilter(this.getPlayerManager(), new Permission("chatmoderator.filters.leet.exempt"), getConfig().getInt("filters.leet.priority"), new LeetSpeakFilterFactory(this, "filters.leet.dictionary").build().getDictionary()));

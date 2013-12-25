@@ -128,46 +128,50 @@ filters:
     profanity:
         default-level: 10
         priority: 5
-        expressions:
-            "\\bf+uck+|f+uck+\\b": # "fuck"
+        templates:
+            tmp1:
+                expression: "\\b%FIRST+%REST+|%FIRST+%REST+\\b"
+                default: true
+        words:
+            "fuck":
                 level: 30
-            "\\bw+ank+|w+ank+\\b": # "wank"
+            "wank":
                 level: 15
-            "\\bd+ick+|d+ick+\\b": # "dick"
+            "dick":
                 level: 20
-            "\\bc+ock+|c+ock+\\b": # "cock"
+            "cock":
                 level: 22
-            "\\bp+enis+|p+enis+\\b": # "penis"
+            "penis":
                 level: 20
-            "\\bs+hit+|s+hit+\\b": # "shit"
+            "shit":
                 level: 10
-            "\\bp+is+|p+is+\\b": # "piss"
+            "piss":
                 level: 7
-            "\\bs+keet+|s+keet+\\b": # "skeet"
+            "skeet":
                 level: 13
-            "\\bb+itch+|b+itch+\\b": # "bitch"
+            "bitch":
                 level: 15
-            "\\bt+its+|t+its+\\b": # "tits"
+            "tits":
                 level: 12
-            "\\bt+itties+|t+itties+\\b": # "titties"
+            "titties":
                 level: 12
-            "\\bp+ussy+|p+ussy+\\b": # "pussy"
+            "pussy":
                 level: 20
-            "\\bc+unt+|c+unt+\\b": # "cunt"
+            "cunt":
                 level: 25
-            "\\bt+wat+|t+wat+\\b": # "twat"
+            "twat":
                 level: 12
-            "\\bc+lit+|c+lit+\\b": # "clit"
+            "clit":
                 level: 15
-            "\\ba+ss+|a+ss+\\b": # "ass"
+            "ass":
                 level: 10
-            "\\bc+um+|c+um+\\b": # "cum"
+            "cum":
                 level: 22
-            "\\bn+igger+|n+igger+\\b": # "nigger"
+            "nigger":
                 level: 30
-            "\\bn+igga+|n+igga+\\b": # "nigga"
+            "nigga":
                 level: 30
-            "\\bf+aggot+|f+aggot+\\b": # "faggot"
+            "faggot":
                 level: 25
-            "\\bq+ueer+|q+ueer+\\b": # "queer"
+            "queer":
                 level: 25
