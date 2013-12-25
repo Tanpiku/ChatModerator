@@ -6,6 +6,7 @@ import org.bukkit.permissions.Permission;
 
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
 
@@ -64,8 +65,11 @@ public abstract class Filter implements Comparable<Filter> {
      * @param message The message that should be instead sent. This may be a modified message, the unchanged message, or
      *                <code>null</code>, if the message is to be cancelled.
      * @param player  The player that sent the message.
+     * @param type    The {@link tc.oc.chatmoderator.zones.ZoneType} relating to where the message originated from.
+     *
+     * @return The state of the message after running this filter.
      */
     @Nullable
-    public abstract FixedMessage filter(FixedMessage message, final OfflinePlayer player);
+    public abstract FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type);
 
 }

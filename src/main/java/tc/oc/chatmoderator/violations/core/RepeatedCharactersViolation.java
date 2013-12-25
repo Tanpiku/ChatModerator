@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
 import tc.oc.chatmoderator.violations.Violation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.util.List;
 
@@ -24,9 +25,11 @@ public class RepeatedCharactersViolation extends Violation {
      * @param player The player that sent the offending message.
      * @param message The offending message that was sent.
      * @param level The level that the violation carries.
+     * @param repeatedCharacters The selection of matches that didn't pass the {@link tc.oc.chatmoderator.filters.core.RepeatedCharactersFilter}
+     * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} where the violation occurred.
      */
-    public RepeatedCharactersViolation(Instant time, OfflinePlayer player, String message, double level, List<String> repeatedCharacters) {
-        super(time, player, message, level, true);
+    public RepeatedCharactersViolation(Instant time, OfflinePlayer player, String message, double level, List<String> repeatedCharacters, ZoneType zoneType) {
+        super(time, player, message, level, true, zoneType);
 
         this.repeatedCharacters = Preconditions.checkNotNull(repeatedCharacters);
     }

@@ -73,7 +73,7 @@ public final class ChatModeratorListener implements Listener {
                 break;
             }
 
-            filter.filter(fixedMessage, player);
+            filter.filter(fixedMessage, player, ZoneType.CHAT);
         }
 
         event.setMessage(fixedMessage.getOriginal());
@@ -124,7 +124,7 @@ public final class ChatModeratorListener implements Listener {
             }
 
             for (Filter filter : this.getFilterManager().getFiltersForZone(signZone)) {
-                filter.filter(message, player);
+                filter.filter(message, player, ZoneType.SIGN);
             }
 
             event.setLine(i, message.getOriginal());

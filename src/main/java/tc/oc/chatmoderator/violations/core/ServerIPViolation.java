@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
 
 import tc.oc.chatmoderator.violations.Violation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.net.InetAddress;
 import java.util.Collections;
@@ -17,8 +18,18 @@ import java.util.Set;
 public class ServerIPViolation extends Violation {
     private Set<InetAddress> ipAddresses = new HashSet<>();
 
-    public ServerIPViolation(final Instant time, final OfflinePlayer player, final String message, final double level, final Set<InetAddress> ipAddresses) {
-        super(time, player, message, level, true);
+    /**
+     * Publicly instantiable variant of ServerIPViolation.
+     *
+     * @param time The time that the violation occurred.
+     * @param player The player that sent the offending message.
+     * @param message The offending message that was sent.
+     * @param level The level that the violation carries.
+     * @param ipAddresses The selection of {@link java.net.InetAddress} that didn't pass the {@link tc.oc.chatmoderator.filters.core.RepeatedCharactersFilter}
+     * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} where the violation occurred.
+     */
+    public ServerIPViolation(final Instant time, final OfflinePlayer player, final String message, final double level, final Set<InetAddress> ipAddresses, ZoneType zoneType) {
+        super(time, player, message, level, true, zoneType);
        
         for (InetAddress ipAddress : Preconditions.checkNotNull(ipAddresses, "IP addresses")) {
             this.ipAddresses.add(Preconditions.checkNotNull(ipAddress, "IP address"));

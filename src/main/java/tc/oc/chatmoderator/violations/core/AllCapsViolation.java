@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
 import tc.oc.chatmoderator.violations.Violation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.util.Set;
 
@@ -22,9 +23,11 @@ public class AllCapsViolation extends Violation {
      * @param player The player that sent the message.
      * @param message The message that was sent.
      * @param upperCaseWords The Set of words that was in all uppercase.
+     * @param level The severity of the violation.
+     * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} in which the violation occurred.
      */
-    public AllCapsViolation(Instant time, OfflinePlayer player, String message, double level, Set<String> upperCaseWords) {
-        super(time, player, message, level, true);
+    public AllCapsViolation(Instant time, OfflinePlayer player, String message, double level, Set<String> upperCaseWords, ZoneType zoneType) {
+        super(time, player, message, level, true, zoneType);
 
         this.upperCaseWords = ImmutableSet.copyOf(Preconditions.checkNotNull(upperCaseWords));
     }

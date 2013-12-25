@@ -9,6 +9,7 @@ import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.RepeatedCharactersViolation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -36,17 +37,18 @@ public class RepeatedCharactersFilter extends Filter {
      * @param message The message that should be instead sent. This may be a modified message, the unchanged message, or
      *                <code>null</code>, if the message is to be cancelled.
      * @param player  The player that sent the message.
+     * @param type    The {@link tc.oc.chatmoderator.zones.ZoneType} relating to where the message originated from.
      *
-     * @return If "fixed", the fixed message, else, the original message.
+     * @return The state of the message after running this filter.
      */
     @Nullable
     @Override
-    public FixedMessage filter(FixedMessage message, OfflinePlayer player) {
+    public FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type) {
         Matcher matcher = this.pattern.matcher(message.getFixed());
         List<String> repeatedCharacters = new ArrayList<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "player"));
-        Violation violation = new RepeatedCharactersViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(RepeatedCharactersViolation.class), repeatedCharacters);
+        Violation violation = new RepeatedCharactersViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(RepeatedCharactersViolation.class), repeatedCharacters, type);
 
         while(matcher.find()) {
             repeatedCharacters.add(matcher.group());

@@ -3,6 +3,7 @@ package tc.oc.chatmoderator.violations;
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 /**
  * Represents an individual violation.
@@ -14,16 +15,18 @@ public abstract class Violation {
     protected final String message;
     protected boolean cancelled = false;
     protected boolean fixed;
+    protected final ZoneType zoneType;
 
     /**
      * For subclasses only.
      */
-    protected Violation(final Instant time, final OfflinePlayer player, final String message, double level, boolean fixed) {
+    protected Violation(final Instant time, final OfflinePlayer player, final String message, double level, boolean fixed, final ZoneType zoneType) {
         this.time = Preconditions.checkNotNull(time, "Time");
         this.player = Preconditions.checkNotNull(player, "Player");
         this.message = Preconditions.checkNotNull(message, "Message");
         this.level = level;
         this.fixed = fixed;
+        this.zoneType = Preconditions.checkNotNull(zoneType, "Zone type");
     }
 
     /**
@@ -71,6 +74,15 @@ public abstract class Violation {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the {@link tc.oc.chatmoderator.zones.ZoneType} that the violation occurred in.
+     *
+     * @return The zone-type.
+     */
+    public final ZoneType getZoneType() {
+        return this.zoneType;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Violation{");
@@ -79,6 +91,7 @@ public abstract class Violation {
         sb.append(", level=").append(level);
         sb.append(", message='").append(message).append('\'');
         sb.append(", cancelled=").append(cancelled);
+        sb.append(", zone-type=").append(zoneType.name());
         sb.append('}');
         return sb.toString();
     }

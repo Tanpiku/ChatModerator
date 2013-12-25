@@ -9,6 +9,7 @@ import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.AllCapsViolation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -33,13 +34,23 @@ public class AllCapsFilter extends Filter {
         super(playerManager, exemptPermission, priority);
     }
 
+    /**
+     * Filters out messages written in all-caps
+     *
+     * @param message The message that should be instead sent. This may be a modified message, the unchanged message, or
+     *                <code>null</code>, if the message is to be cancelled.
+     * @param player  The player that sent the message.
+     * @param type    The {@link tc.oc.chatmoderator.zones.ZoneType} relating to where the message originated from.
+     *
+     * @return The state of the message after running this filter.
+     */
     @Override
-    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player) {
+    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
         Matcher matcher = AllCapsFilter.pattern.matcher(Preconditions.checkNotNull(message.getFixed(), "message"));
         Set<String> upperCaseWords = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
-        Violation violation = new AllCapsViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(AllCapsViolation.class), upperCaseWords);
+        Violation violation = new AllCapsViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(AllCapsViolation.class), upperCaseWords, type);
 
         while (matcher.find()) {
             upperCaseWords.add(matcher.group().trim());

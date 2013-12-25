@@ -93,7 +93,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
         this.onDisable();
         this.onEnable();
 
-        sender.sendMessage(ChatColor.AQUA + "[ChatModerator] - " + ChatColor.DARK_GREEN + "Successfully reloaded config and registered all filters.");
+        sender.sendMessage(ChatColor.AQUA + "[ChatModerator] - " + ChatColor.DARK_GREEN + "Successfully reloaded config and registered all filters and zones.");
 
         return true;
     }
@@ -120,7 +120,6 @@ public class ChatModeratorPlugin extends JavaPlugin {
     private void setUpZones(ChatModeratorListener moderatorListener) {
         moderatorListener.getZoneManager().registerZone(ZoneType.CHAT, new ZoneFactory(this, "zones.chat").parse().getZone());
         moderatorListener.getZoneManager().registerZone(ZoneType.SIGN, new ZoneFactory(this, "zones.signs").parse().getZone());
-        moderatorListener.getZoneManager().registerZone(ZoneType.ANVIL, new ZoneFactory(this, "zones.anvil").parse().getZone());
     }
 
     /**

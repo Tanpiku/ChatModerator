@@ -10,6 +10,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.core.DuplicateMessageViolation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
 
@@ -33,10 +34,12 @@ public class DuplicateMessageFilter extends Filter {
      * @param message The message that should be instead sent. This may be a modified message, the unchanged message, or
      *                <code>null</code>, if the message is to be cancelled.
      * @param player  The player that sent the message.
-     * @return
+     * @param type    The {@link tc.oc.chatmoderator.zones.ZoneType} relating to where the message originated from.
+     *
+     * @return The state of the message after running this filter.
      */
     @Override
-    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player) {
+    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
         PlayerViolationManager violationSet = this.getPlayerManager().getViolationSet(player);
 
         Instant now = Instant.now();
@@ -50,7 +53,7 @@ public class DuplicateMessageFilter extends Filter {
         }
 
         if (lastMessage.withDurationAdded(delay, 1).isAfter(now)) {
-            violationSet.addViolation(new DuplicateMessageViolation(message.getTimeSent(), player, message.getOriginal(), difference));
+            violationSet.addViolation(new DuplicateMessageViolation(message.getTimeSent(), player, message.getOriginal(), difference, type));
             message.setFixed(null);
         } else {
             violationSet.setLastMessageTime(now);

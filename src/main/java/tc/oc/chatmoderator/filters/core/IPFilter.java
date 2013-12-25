@@ -14,6 +14,7 @@ import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ServerIPViolation;
+import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
 import java.net.InetAddress;
@@ -41,10 +42,13 @@ public class IPFilter extends Filter {
      * @param message The message that should be instead sent. This may be a modified message, the unchanged message, or
      *                <code>null</code>, if the message is to be cancelled.
      * @param player  The player that sent the message.
+     * @param type    The {@link tc.oc.chatmoderator.zones.ZoneType} relating to where the message originated from.
+     *
+     * @return The state of the message after running this filter.
      */
     @Nullable
     @Override
-    public FixedMessage filter(FixedMessage message, final OfflinePlayer player) {
+    public FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type) {
 //      if(((Player) player).hasPermission(this.getExemptPermission()))
 //          return message;
      
@@ -52,7 +56,7 @@ public class IPFilter extends Filter {
         Set<InetAddress> ipAddresses = new HashSet<>();
 
         PlayerViolationManager violations = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "Player"));
-        Violation violation = new ServerIPViolation(message.getTimeSent(), player, message.getOriginal(), violations.getViolationLevel(ServerIPViolation.class), ImmutableSet.copyOf(ipAddresses));
+        Violation violation = new ServerIPViolation(message.getTimeSent(), player, message.getOriginal(), violations.getViolationLevel(ServerIPViolation.class), ImmutableSet.copyOf(ipAddresses), type);
         
         while (matcher.find()) {
             try {
