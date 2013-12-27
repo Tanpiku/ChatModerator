@@ -6,10 +6,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
-import tc.oc.chatmoderator.filters.WeightedFilter;
+import tc.oc.chatmoderator.filters.WeightedWordsFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
+import tc.oc.chatmoderator.words.Word;
+import tc.oc.chatmoderator.words.WordSet;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
@@ -22,7 +24,7 @@ import java.util.regex.Pattern;
 /**
  * WeightedFilter that filters out different levels of profanity.  Multiple patterns.
  */
-public class ProfanityFilter extends WeightedFilter {
+public class ProfanityFilter extends WeightedWordsFilter {
 
     /**
      * Publicly insatiable version of this class.
@@ -32,7 +34,7 @@ public class ProfanityFilter extends WeightedFilter {
      * @param weights The patterns and weights to search on.
      */
     public ProfanityFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority) {
-        super(playerManager, exemptPermission, weights, priority);
+        super(playerManager, exemptPermission, weights, priority, true);
     }
 
     /**
@@ -48,41 +50,49 @@ public class ProfanityFilter extends WeightedFilter {
     @Nullable
     @Override
     public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
+        WordSet wordSet = this.makeWordSet(message);
+
         Matcher matcher;
         Set<String> profanities = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
 
-        for(Pattern pattern : this.getWeights().keySet()) {
-            Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities, type);
-            matcher = pattern.matcher(Preconditions.checkNotNull(message.getFixed(), "message"));
+        for (Word word : wordSet.toList()) {
+            for(Pattern pattern : this.getWeights().keySet()) {
 
-            while (matcher.find()) {
-                String currentGroup = matcher.group();
+                Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities, type);
+                matcher = pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
 
-                profanities.add(matcher.group());
+                while (matcher.find()) {
+                    String currentGroup = matcher.group();
 
-                StringBuilder builder = new StringBuilder();
+                    profanities.add(matcher.group());
 
-                builder.append(matcher.group().charAt(0));
-                builder.append(ChatColor.MAGIC + "");
-                builder.append(matcher.group().substring(1,matcher.group().length() - 1));
-                builder.append(ChatColor.RESET + "");
-                builder.append(matcher.group().charAt(matcher.group().length() - 1));
+                    StringBuilder builder = new StringBuilder();
 
-                message.setFixed(message.getFixed().replaceFirst(currentGroup, builder.toString()));
+                    builder.append(matcher.group().charAt(0));
+                    builder.append(ChatColor.MAGIC + "");
+                    builder.append(matcher.group().substring(1,matcher.group().length() - 1));
+                    builder.append(ChatColor.RESET + "");
+                    builder.append(matcher.group().charAt(matcher.group().length() - 1));
+
+                    word.setWord(word.getWord().replaceFirst(currentGroup, builder.toString()));
+                    message.setFixed(wordSet.toString());
+                }
+
+                // TODO: Properly set the level for this violation
+                violation.setLevel(super.getWeightFor(pattern));
+
+                if (profanities.size() > 0) {
+                    violationManager.addViolation(violation);
+                }
+
+                profanities.clear();
+
+                matcher = null;
             }
 
-            // TODO: Properly set the level for this violation
-            violation.setLevel(super.getWeightFor(pattern));
-
-            if (profanities.size() > 0) {
-                violationManager.addViolation(violation);
-            }
-
-            profanities.clear();
-
-            matcher = null;
+            word.setChecked(true);
         }
 
         return message;

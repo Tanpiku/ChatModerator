@@ -14,13 +14,13 @@ public class FixedMessage {
     /**
      * Represents the original message sent in chat.
      */
-    private final @Nonnull String original;
+    private @Nonnull String original;
 
     /**
      * Represents the time that the original message was sent.
      * All violations pertaining to the original message will have this {@link org.joda.time.Instant}.
      */
-    private final @Nonnull Instant timeSent;
+    private @Nonnull Instant timeSent;
 
     /**
      * Represents the fixed message that may or may not be sent in chat.
@@ -34,6 +34,18 @@ public class FixedMessage {
      */
     public FixedMessage(final String original, final Instant timeSent) {
         this.original = original;
+        this.timeSent = Preconditions.checkNotNull(timeSent, "time");
+        this.fixed = null;
+    }
+
+    /**
+     * Constructor for the {@link tc.oc.chatmoderator.messages.FixedMessage} class
+     *
+     * @param original The original message that was sent.
+     */
+    public FixedMessage(final String original, final String fixed, final Instant timeSent) {
+        this.original = original;
+        this.fixed = fixed;
         this.timeSent = Preconditions.checkNotNull(timeSent, "time");
         this.fixed = null;
     }
