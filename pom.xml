@@ -6,7 +6,7 @@
 
     <groupId>tc.oc</groupId>
     <artifactId>ChatModerator</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.6-SNAPSHOT</version>
 
     <name>ChatModerator</name>
     <description>Anti-spam plugin for Bukkit.</description>
