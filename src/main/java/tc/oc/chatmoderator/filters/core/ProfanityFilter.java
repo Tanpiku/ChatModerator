@@ -10,6 +10,7 @@ import tc.oc.chatmoderator.filters.WeightedWordsFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
+import tc.oc.chatmoderator.whitelist.Whitelist;
 import tc.oc.chatmoderator.words.Word;
 import tc.oc.chatmoderator.words.WordSet;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -33,8 +34,8 @@ public class ProfanityFilter extends WeightedWordsFilter {
      * @param exemptPermission The permission that will exempt a player from the filter.
      * @param weights The patterns and weights to search on.
      */
-    public ProfanityFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority) {
-        super(playerManager, exemptPermission, weights, priority, true);
+    public ProfanityFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority, Whitelist whitelist) {
+        super(playerManager, exemptPermission, weights, priority, true, whitelist);
     }
 
     /**
@@ -58,6 +59,11 @@ public class ProfanityFilter extends WeightedWordsFilter {
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
 
         for (Word word : wordSet.toList()) {
+            if (this.getWhitelist().containsWord(word, true)) {
+                word.setChecked(true);
+                continue;
+            }
+
             for(Pattern pattern : this.getWeights().keySet()) {
 
                 Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities, type);

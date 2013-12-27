@@ -128,6 +128,9 @@ filters:
     profanity:
         default-level: 10
         priority: 5
+        whitelist:
+            - "glass"
+            - "assumption"
         templates:
             tmp1:
                 expression: "\\b%FIRST+%REST+|%FIRST+%REST+\\b"
