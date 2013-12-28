@@ -1,7 +1,8 @@
-package tc.oc.chatmoderator.factories;
+package tc.oc.chatmoderator.factories.core;
 
 import com.google.common.base.Preconditions;
 import tc.oc.chatmoderator.ChatModeratorPlugin;
+import tc.oc.chatmoderator.factories.ChatModeratorFactory;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.util.ChatModeratorUtil;
 import tc.oc.chatmoderator.zones.Zone;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Factory class for parsing the configuration for zones
  */
-public class ZoneFactory {
+public class ZoneFactory implements ChatModeratorFactory {
 
     /**
      * The base ChatModerator plugin.
@@ -60,7 +61,7 @@ public class ZoneFactory {
      *
      * @return The state of this factory class.
      */
-    public ZoneFactory parse() {
+    public ZoneFactory build() {
         enabled = plugin.getConfig().getBoolean(this.path + ".enabled");
 
         for(String s : plugin.getConfig().getStringList(this.path + ".excluded-filters")) {

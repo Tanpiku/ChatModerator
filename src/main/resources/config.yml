@@ -21,103 +21,6 @@ filters:
     leet:
         default-level: 2
         priority: 4
-        dictionary:
-            A:
-                - '@'
-                - "^"
-                - '/\'
-                - '/-\'
-            B:
-                - "l3"
-                - "13"
-                - "P>"
-                - "|:"
-            C:
-                - "["
-                - "("
-                - "{"
-            D:
-                - "|)"
-                - "|>"
-                - "|o"
-            E:
-                - "[-"
-            F:
-                - "|="
-                - "/="
-                - "|#"
-            G:
-                - "C-"
-                - "(_+"
-            H:
-                - "#"
-                - "}{"
-                - "|-|"
-                - "[-]"
-                - ")-("
-                - "(-)"
-                - "/-/"
-            I:
-                - "]"
-            J:
-                - "]"
-                - "_|"
-                - "_/"
-            K:
-                - "|<"
-                - "|{"
-                - "|("
-            L:
-                - "|"
-                - "|_"
-            M:
-                - '/\/\'
-                - "|v|"
-                - '|\/|'
-                - "//."
-            N:
-                - '|\|'
-                - '/\/'
-                - "/V"
-                - "^/"
-            O:
-                - "()"
-                - "[]"
-            P:
-                - '|*'
-                - '|"'
-            Q:
-                - "()_"
-                - "(_,)"
-            R:
-                - '/2'
-                - 'l2'
-                - '|^'
-            S:
-            T:
-                - "-|-"
-            U:
-                - '|_|'
-                - 'L|'
-                - '(_)'
-            V:
-                - '\/'
-            W:
-                - 'VV'
-                - '\/\/'
-                - "\\'"
-                - "'//"
-                - '\|/'
-                - '\^/'
-            X:
-                - '}{'
-                - ')('
-            Y:
-                - "'/'"
-            Z:
-                - '~/_'
-                - '7_'
-                - '>_'
     repeated-characters:
         default-level: 10
         priority: 2
@@ -125,15 +28,26 @@ filters:
     all-caps:
         default-level: 12
         priority: 3
+        whitelist:
+          - "I"
+          - "PGM"
+          - "OCN"
+          - "MC"
+          - ":D"
     profanity:
         default-level: 10
         priority: 5
         whitelist:
             - "glass"
             - "assumption"
+            - "massive"
+            - "snowball|snowballs"
         templates:
             tmp1:
                 expression: "\\b%FIRST+%REST+|%FIRST+%REST+\\b"
+                default: false
+            tmp2:
+                expression: "%FIRST%REST"
                 default: true
         words:
             "fuck":
@@ -170,17 +84,51 @@ filters:
                 level: 10
             "cum":
                 level: 22
-            "nigger":
+            "nigger|nigga|niqqa":
                 level: 30
-            "nigga":
-                level: 30
-            "faggot":
-                level: 25
-            "queer":
+            "faggot|queer":
                 level: 25
             "slut":
                 level: 15
-            "anus":
+            "anus|arse":
                 level: 15
-            "arse":
+            "weed":
+                level: 10
+            "poon":
+                level: 20
+            "motherfuck":
+                level: 30
+            "mofo":
+                level: 30
+            "fag":
+                level: 25
+            "erection":
+                level: 20
+            "dildo":
+                level: 13
+            "anal":
                 level: 15
+            "bastard|basterd":
+                level: 20
+            "boner":
+                level: 10
+            "clit":
+                level: 13
+            "douche":
+                level: 10
+            "ejaculate":
+                level: 20
+            "goatse":
+                level: 14
+            "bukake":
+                level: 14
+            "masturbate|masterbate":
+                level: 10
+            "porn":
+                level: 10
+            "whore":
+                level: 20
+            "blowjob":
+                level: 10
+            "ejaculat":
+                level: 20

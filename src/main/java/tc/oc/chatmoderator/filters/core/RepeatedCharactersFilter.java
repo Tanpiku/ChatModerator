@@ -53,7 +53,9 @@ public class RepeatedCharactersFilter extends Filter {
         while(matcher.find()) {
             repeatedCharacters.add(matcher.group());
 
-            message.setFixed(message.getFixed().replaceFirst(matcher.group(), matcher.group().charAt(0) + ""));
+            char replace = matcher.group().length() > 0 ? matcher.group().charAt(0) : ' ';
+
+            message.setFixed(message.getFixed().replaceFirst(Pattern.quote(matcher.group()), replace + ""));
         }
 
         if(repeatedCharacters.size() > 0) {

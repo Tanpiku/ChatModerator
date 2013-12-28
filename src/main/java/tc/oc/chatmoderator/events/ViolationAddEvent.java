@@ -17,11 +17,23 @@ public class ViolationAddEvent extends Event {
      * The handlers for the event.
      */
     private static final HandlerList handlers = new HandlerList();
-    @Nonnull
-    private final Violation violation;
-    @Nonnull
-    private final OfflinePlayer player;
 
+    /**
+     * The violation that was added.
+     */
+    private @Nonnull final Violation violation;
+
+    /**
+     * The player that violated.
+     */
+    private @Nonnull final OfflinePlayer player;
+
+    /**
+     * Creates a {@link tc.oc.chatmoderator.events.ViolationAddEvent}.
+     *
+     * @param player The {@link org.bukkit.OfflinePlayer} that caused the violation.
+     * @param violation The {@link tc.oc.chatmoderator.violations.Violation} that was broken.
+     */
     public ViolationAddEvent(@Nonnull final OfflinePlayer player, @Nonnull final Violation violation) {
         super(true);
         this.violation = Preconditions.checkNotNull(violation, "Violation");

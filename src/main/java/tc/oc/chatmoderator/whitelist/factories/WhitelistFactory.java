@@ -2,12 +2,13 @@ package tc.oc.chatmoderator.whitelist.factories;
 
 import com.google.common.base.Preconditions;
 import tc.oc.chatmoderator.ChatModeratorPlugin;
+import tc.oc.chatmoderator.factories.ChatModeratorFactory;
 import tc.oc.chatmoderator.whitelist.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WhitelistFactory {
+public class WhitelistFactory implements ChatModeratorFactory {
 
     private ChatModeratorPlugin plugin;
 

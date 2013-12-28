@@ -1,9 +1,10 @@
-package tc.oc.chatmoderator.factories;
+package tc.oc.chatmoderator.factories.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import tc.oc.chatmoderator.ChatModeratorPlugin;
+import tc.oc.chatmoderator.factories.ChatModeratorFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Utility class that serves the purpose to parse and set-up configuration sections for filters.
  */
-public class WeightedFilterFactory {
+public class WeightedFilterFactory implements ChatModeratorFactory {
 
     /**
      * The base plugin.

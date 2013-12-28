@@ -5,10 +5,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
-import tc.oc.chatmoderator.filters.Filter;
+import tc.oc.chatmoderator.filters.WordFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.AllCapsViolation;
+import tc.oc.chatmoderator.whitelist.Whitelist;
+import tc.oc.chatmoderator.words.Word;
+import tc.oc.chatmoderator.words.WordSet;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
@@ -20,9 +23,9 @@ import java.util.regex.Pattern;
 /**
  * Filters out and dispatches violations on messages that have part or all containing all capital letters.
  */
-public class AllCapsFilter extends Filter {
+public class AllCapsFilter extends WordFilter {
 
-    private static final Pattern pattern = Pattern.compile("[A-Z0-9, ]{3,}");
+    private static final Pattern pattern = Pattern.compile("^[^a-z]*$");
 
     /**
      * Publicly insatiable version of the AllCapsFilter.
@@ -30,8 +33,8 @@ public class AllCapsFilter extends Filter {
      * @param playerManager The base player manager.
      * @param exemptPermission The permission that exempts a player from the AllCapsFilter.
      */
-    public AllCapsFilter(PlayerManager playerManager, Permission exemptPermission, int priority) {
-        super(playerManager, exemptPermission, priority);
+    public AllCapsFilter(PlayerManager playerManager, Permission exemptPermission, int priority, Whitelist whitelist) {
+        super(playerManager, exemptPermission, priority, true, whitelist);
     }
 
     /**
@@ -46,20 +49,37 @@ public class AllCapsFilter extends Filter {
      */
     @Override
     public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
-        Matcher matcher = AllCapsFilter.pattern.matcher(Preconditions.checkNotNull(message.getFixed(), "message"));
+        WordSet wordSet = this.makeWordSet(message);
+
+        Matcher matcher = null;
         Set<String> upperCaseWords = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
         Violation violation = new AllCapsViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(AllCapsViolation.class), upperCaseWords, type);
 
-        while (matcher.find()) {
-            upperCaseWords.add(matcher.group().trim());
+        boolean first = true;
 
-            message.setFixed(message.getFixed().replaceFirst(matcher.group().trim(), matcher.group().trim().toLowerCase()));
-        }
+        for (Word word : wordSet.toList()) {
+            if (this.whitelist.containsWord(word, false)) {
+                word.setChecked(true);
+                continue;
+            }
 
-        if (upperCaseWords.size() > 0) {
-            violationManager.addViolation(violation);
+            matcher = AllCapsFilter.pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
+
+            while (matcher.find()) {
+                upperCaseWords.add(matcher.group().trim());
+
+                word.setWord(word.getWord().replaceFirst(Pattern.quote(matcher.group()), matcher.group().toLowerCase()));
+                message.setFixed(wordSet.toString());
+            }
+
+            if (upperCaseWords.size() > 0) {
+                violationManager.addViolation(violation);
+            }
+
+            word.setChecked(true);
+            upperCaseWords.clear();
         }
 
         return message;

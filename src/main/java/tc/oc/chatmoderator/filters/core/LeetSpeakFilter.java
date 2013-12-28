@@ -64,9 +64,7 @@ public class LeetSpeakFilter extends Filter {
             Matcher matcher = pattern.matcher(message.getFixed());
 
             while (matcher.find()) {
-                String groupQuoted = Pattern.quote(matcher.group());
-
-                message.setFixed(message.getFixed().replaceFirst(groupQuoted, this.getCharacterFor(pattern).toString()));
+                message.setFixed(message.getFixed().replaceFirst(Pattern.quote(matcher.group()), this.getCharacterFor(pattern).toString()));
                 words.add(StringEscapeUtils.escapeJava(matcher.group()));
             }
         }

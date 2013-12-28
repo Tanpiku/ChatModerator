@@ -70,8 +70,6 @@ public class ProfanityFilter extends WeightedWordsFilter {
                 matcher = pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
 
                 while (matcher.find()) {
-                    String currentGroup = matcher.group();
-
                     profanities.add(matcher.group());
 
                     StringBuilder builder = new StringBuilder();
@@ -82,7 +80,7 @@ public class ProfanityFilter extends WeightedWordsFilter {
                     builder.append(ChatColor.RESET + "");
                     builder.append(matcher.group().charAt(matcher.group().length() - 1));
 
-                    word.setWord(word.getWord().replaceFirst(currentGroup, builder.toString()));
+                    word.setWord(word.getWord().replaceFirst(Pattern.quote(matcher.group()), builder.toString()));
                     message.setFixed(wordSet.toString());
                 }
 
