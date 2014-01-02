@@ -43,7 +43,8 @@ public class Template {
     public Template build() {
         this.result = Pattern.compile(
                 template.replaceAll("%FIRST", word.charAt(0) + "")
-                        .replaceAll("%REST", word.substring(1)),
+                        .replaceAll("%REST", word.substring(1))
+                        .replaceAll("%WHOLE", word),
                 Pattern.CASE_INSENSITIVE
         );
 

@@ -34,21 +34,22 @@ filters:
           - "OCN"
           - "MC"
           - ":D"
+          - ":P"
     profanity:
         default-level: 10
         priority: 5
         whitelist:
-            - "glass"
-            - "assumption"
-            - "massive"
             - "snowball|snowballs"
         templates:
             tmp1:
                 expression: "\\b%FIRST+%REST+|%FIRST+%REST+\\b"
                 default: false
             tmp2:
-                expression: "%FIRST%REST"
+                expression: "%WHOLE"
                 default: true
+            tmp3:
+                expression: "\\b(%WHOLE)\\b"
+                default: false
         words:
             "fuck":
                 level: 30
@@ -80,8 +81,9 @@ filters:
                 level: 12
             "clit":
                 level: 15
-            "ass":
+            "ass|asshole|assface":
                 level: 10
+                template: tmp3
             "cum":
                 level: 22
             "nigger|nigga|niqqa":
