@@ -9,6 +9,7 @@ import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.core.DuplicateMessageViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
 
@@ -22,7 +23,7 @@ public class DuplicateMessageFilter extends Filter {
     private long delay;
 
     public DuplicateMessageFilter(PlayerManager playerManager, Permission exemptPermission, long delay, int priority) {
-        super(playerManager, exemptPermission, priority);
+        super(playerManager, exemptPermission, priority, FixStyleApplicant.FixStyle.NONE);
 
         Preconditions.checkArgument(delay > 0, "Delay must be greater than 0...");
         this.delay = delay;

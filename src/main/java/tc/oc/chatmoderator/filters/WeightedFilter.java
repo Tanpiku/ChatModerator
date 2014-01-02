@@ -3,6 +3,7 @@ package tc.oc.chatmoderator.filters;
 import com.google.common.base.Preconditions;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +25,8 @@ public abstract class WeightedFilter extends Filter {
      * @param playerManager The base player manager.
      * @param exemptPermission The permission that will exempt you from the filter.
      */
-    public WeightedFilter(final PlayerManager playerManager, Permission exemptPermission, final HashMap<Pattern, Double> weights, int priority) {
-        super(playerManager, exemptPermission, priority);
+    public WeightedFilter(final PlayerManager playerManager, Permission exemptPermission, final HashMap<Pattern, Double> weights, int priority, FixStyleApplicant.FixStyle fixStyle) {
+        super(playerManager, exemptPermission, priority, fixStyle);
 
         this.weights = Preconditions.checkNotNull(weights);
     }

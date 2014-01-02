@@ -8,6 +8,7 @@ import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.WeightedWordsFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
 import tc.oc.chatmoderator.whitelist.Whitelist;
@@ -27,6 +28,8 @@ import java.util.regex.Pattern;
  */
 public class ProfanityFilter extends WeightedWordsFilter {
 
+    private FixStyleApplicant.FixStyle defaultFixStyle;
+
     /**
      * Publicly insatiable version of this class.
      *
@@ -34,8 +37,9 @@ public class ProfanityFilter extends WeightedWordsFilter {
      * @param exemptPermission The permission that will exempt a player from the filter.
      * @param weights The patterns and weights to search on.
      */
-    public ProfanityFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority, Whitelist whitelist) {
-        super(playerManager, exemptPermission, weights, priority, true, whitelist);
+    public ProfanityFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority, Whitelist whitelist, FixStyleApplicant.FixStyle fixStyle) {
+        super(playerManager, exemptPermission, weights, priority, true, whitelist, fixStyle);
+        this.defaultFixStyle = Preconditions.checkNotNull(fixStyle);
     }
 
     /**
@@ -66,21 +70,13 @@ public class ProfanityFilter extends WeightedWordsFilter {
 
             for(Pattern pattern : this.getWeights().keySet()) {
 
-                Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities, type);
+                Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities, type, FixStyleApplicant.FixStyle.MAGIC);
                 matcher = pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
 
                 while (matcher.find()) {
                     profanities.add(matcher.group());
 
-                    StringBuilder builder = new StringBuilder();
-
-                    builder.append(matcher.group().charAt(0));
-                    builder.append(ChatColor.MAGIC + "");
-                    builder.append(matcher.group().substring(1,matcher.group().length() - 1));
-                    builder.append(ChatColor.RESET + "");
-                    builder.append(matcher.group().charAt(matcher.group().length() - 1));
-
-                    word.setWord(word.getWord().replaceFirst(Pattern.quote(matcher.group()), builder.toString()));
+                    word.setWord(FixStyleApplicant.fixWord(word, violation.getFixStyle()).getWord());
                     message.setFixed(wordSet.toString());
                 }
 

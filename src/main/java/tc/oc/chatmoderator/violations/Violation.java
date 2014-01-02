@@ -3,6 +3,7 @@ package tc.oc.chatmoderator.violations;
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 /**
@@ -16,17 +17,19 @@ public abstract class Violation {
     protected boolean cancelled = false;
     protected boolean fixed;
     protected final ZoneType zoneType;
+    protected FixStyleApplicant.FixStyle fixStyle;
 
     /**
      * For subclasses only.
      */
-    protected Violation(final Instant time, final OfflinePlayer player, final String message, double level, boolean fixed, final ZoneType zoneType) {
+    protected Violation(final Instant time, final OfflinePlayer player, final String message, double level, boolean fixed, final ZoneType zoneType, final FixStyleApplicant.FixStyle fixStyle) {
         this.time = Preconditions.checkNotNull(time, "Time");
         this.player = Preconditions.checkNotNull(player, "Player");
         this.message = Preconditions.checkNotNull(message, "Message");
         this.level = level;
         this.fixed = fixed;
         this.zoneType = Preconditions.checkNotNull(zoneType, "Zone type");
+        this.fixStyle = fixStyle;
     }
 
     /**
@@ -132,4 +135,11 @@ public abstract class Violation {
         this.level = level;
     }
 
+    public FixStyleApplicant.FixStyle getFixStyle() {
+        return this.fixStyle;
+    }
+
+    public void setFixStyle(FixStyleApplicant.FixStyle fixStyle) {
+        this.fixStyle = Preconditions.checkNotNull(fixStyle);
+    }
 }

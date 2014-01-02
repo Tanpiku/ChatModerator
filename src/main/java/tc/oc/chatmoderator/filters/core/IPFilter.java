@@ -12,6 +12,7 @@ import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ServerIPViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -30,8 +31,8 @@ public class IPFilter extends Filter {
 
     private static final Pattern pattern = Pattern.compile("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
 
-    public IPFilter(PlayerManager playerManager, Permission exemptPermission, int priority) {
-        super(playerManager, exemptPermission, priority);
+    public IPFilter(PlayerManager playerManager, Permission exemptPermission, int priority, FixStyleApplicant.FixStyle fixStyle) {
+        super(playerManager, exemptPermission, priority, fixStyle);
     }
 
     /**
@@ -56,7 +57,7 @@ public class IPFilter extends Filter {
         Set<InetAddress> ipAddresses = new HashSet<>();
 
         PlayerViolationManager violations = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "Player"));
-        Violation violation = new ServerIPViolation(message.getTimeSent(), player, message.getOriginal(), violations.getViolationLevel(ServerIPViolation.class), ImmutableSet.copyOf(ipAddresses), type);
+        Violation violation = new ServerIPViolation(message.getTimeSent(), player, message.getOriginal(), violations.getViolationLevel(ServerIPViolation.class), ImmutableSet.copyOf(ipAddresses), type, FixStyleApplicant.FixStyle.DASH);
         
         while (matcher.find()) {
             try {
@@ -65,7 +66,7 @@ public class IPFilter extends Filter {
                 e.printStackTrace();
             }
 
-            message.setFixed(message.getFixed().replaceFirst(matcher.group(), ChatColor.MAGIC + matcher.group().substring(0, 7) + ChatColor.RESET));
+            message.setFixed(message.getFixed().replaceFirst(matcher.group(), FixStyleApplicant.fixString(matcher.group(), violation.getFixStyle())));
         }
 
         if (ipAddresses.size() > 0) {

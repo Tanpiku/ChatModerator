@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Duration;
 import org.joda.time.Instant;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.zones.ZoneType;
 
@@ -27,7 +28,7 @@ public class DuplicateMessageViolation extends Violation {
      * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} in which the violation occurred.
      */
     public DuplicateMessageViolation(Instant time, OfflinePlayer player, String message, Duration timeSinceLast, ZoneType zoneType) {
-        super(time, player, message, 1, true, zoneType);
+        super(time, player, message, 1, true, zoneType, FixStyleApplicant.FixStyle.NONE);
 
         this.timeSinceLast = Preconditions.checkNotNull(timeSinceLast);
     }

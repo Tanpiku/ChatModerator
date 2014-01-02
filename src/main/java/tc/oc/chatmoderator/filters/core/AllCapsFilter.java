@@ -7,6 +7,7 @@ import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.WordFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.AllCapsViolation;
 import tc.oc.chatmoderator.whitelist.Whitelist;
@@ -34,7 +35,7 @@ public class AllCapsFilter extends WordFilter {
      * @param exemptPermission The permission that exempts a player from the AllCapsFilter.
      */
     public AllCapsFilter(PlayerManager playerManager, Permission exemptPermission, int priority, Whitelist whitelist) {
-        super(playerManager, exemptPermission, priority, true, whitelist);
+        super(playerManager, exemptPermission, priority, true, whitelist, FixStyleApplicant.FixStyle.NONE);
     }
 
     /**

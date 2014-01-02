@@ -3,6 +3,7 @@ package tc.oc.chatmoderator.violations.core;
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
 import org.joda.time.Instant;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.zones.ZoneType;
 
@@ -26,7 +27,7 @@ public class LeetSpeakViolation extends Violation {
      * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} where the violation occurred.
      */
     public LeetSpeakViolation(Instant time, OfflinePlayer player, String message, double level, ArrayList<String> words, ZoneType zoneType) {
-        super(time, player, message, level, true, zoneType);
+        super(time, player, message, level, true, zoneType, FixStyleApplicant.FixStyle.NONE);
 
         this.words = Preconditions.checkNotNull(words);
     }

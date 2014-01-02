@@ -6,6 +6,7 @@ import org.bukkit.permissions.Permission;
 
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
@@ -17,10 +18,12 @@ public abstract class Filter implements Comparable<Filter> {
     protected final PlayerManager playerManager;
     protected final Permission exemptPermission;
     protected final int priority;
+    protected final FixStyleApplicant.FixStyle defaultFixStyle;
 
-    protected Filter(final PlayerManager playerManager, final Permission exemptPermission, int priority) {
+    protected Filter(final PlayerManager playerManager, final Permission exemptPermission, int priority, final FixStyleApplicant.FixStyle defaultFixStyle) {
         this.playerManager = Preconditions.checkNotNull(playerManager);
         this.exemptPermission = Preconditions.checkNotNull(exemptPermission, "Exempt permission");
+        this.defaultFixStyle = Preconditions.checkNotNull(defaultFixStyle, "Default fix style");
         Preconditions.checkArgument(priority >= 0, "Priority must be greater than or equal to zero!");
 
         this.priority = priority;
@@ -37,6 +40,10 @@ public abstract class Filter implements Comparable<Filter> {
 
     protected PlayerManager getPlayerManager() {
         return this.playerManager;
+    }
+
+    protected FixStyleApplicant.FixStyle getDefaultFixStyle() {
+        return this.defaultFixStyle;
     }
 
     /**

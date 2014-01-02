@@ -7,6 +7,7 @@ import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.RepeatedCharactersViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -23,7 +24,7 @@ public class RepeatedCharactersFilter extends Filter {
     private final int characterCount;
 
     public RepeatedCharactersFilter(PlayerManager playerManager, Permission exemptPermission, final int characterCount, int priority) {
-        super(playerManager, exemptPermission, priority);
+        super(playerManager, exemptPermission, priority, FixStyleApplicant.FixStyle.NONE);
 
         Preconditions.checkArgument(characterCount > 1, "Character count must be greater than 1.");
         this.characterCount = characterCount;

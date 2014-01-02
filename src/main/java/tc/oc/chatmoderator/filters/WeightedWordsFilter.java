@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.whitelist.Whitelist;
 import tc.oc.chatmoderator.words.WordSet;
 import tc.oc.chatmoderator.words.factories.WordSetFactory;
@@ -26,8 +27,8 @@ public abstract class WeightedWordsFilter extends WeightedFilter {
      * @param weights
      * @param priority
      */
-    protected WeightedWordsFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority, boolean useFixed, Whitelist whitelist) {
-        super(playerManager, exemptPermission, weights, priority);
+    protected WeightedWordsFilter(PlayerManager playerManager, Permission exemptPermission, HashMap<Pattern, Double> weights, int priority, boolean useFixed, Whitelist whitelist, FixStyleApplicant.FixStyle fixStyle) {
+        super(playerManager, exemptPermission, weights, priority, fixStyle);
 
         this.useFixed = useFixed;
         this.whitelist = whitelist;

@@ -8,6 +8,7 @@ import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.LeetSpeakViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -23,7 +24,7 @@ public class LeetSpeakFilter extends Filter {
     private ArrayList<Pattern> patterns;
 
     public LeetSpeakFilter(PlayerManager playerManager, Permission exemptPermission, int priority, Map<Character, List<Pattern>> dictionary) {
-        super(playerManager, exemptPermission, priority);
+        super(playerManager, exemptPermission, priority, FixStyleApplicant.FixStyle.NONE);
 
         this.dictionary = Preconditions.checkNotNull(dictionary);
         this.patterns = new ArrayList<>();

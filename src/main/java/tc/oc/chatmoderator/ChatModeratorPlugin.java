@@ -16,10 +16,12 @@ import tc.oc.chatmoderator.factories.core.ZoneFactory;
 import tc.oc.chatmoderator.filters.core.*;
 import tc.oc.chatmoderator.listeners.ChatModeratorListener;
 import tc.oc.chatmoderator.listeners.DebugListener;
+import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.whitelist.factories.WhitelistFactory;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -119,7 +121,8 @@ public class ChatModeratorPlugin extends JavaPlugin {
                 new IPFilter(
                         this.getPlayerManager(),
                         new Permission("chatmoderator.filters.ipfilter.exempt"),
-                        getConfig().getInt("filters.server-ip.priority")
+                        getConfig().getInt("filters.server-ip.priority"),
+                        FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style"))
                 ));
 
         moderatorListener.getFilterManager().registerFilter(
@@ -128,7 +131,8 @@ public class ChatModeratorPlugin extends JavaPlugin {
                         new Permission("chatmoderator.filters.profanity.exempt"),
                         new TemplateFactory(this, "filters.profanity").build().getWeights(),
                         getConfig().getInt("filters.profanity.priority"),
-                        new WhitelistFactory(this, "filters.profanity.whitelist").build().getWhitelist()
+                        new WhitelistFactory(this, "filters.profanity.whitelist").build().getWhitelist(),
+                        FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.profanity.fix-style"))
                 ));
 
         moderatorListener.getFilterManager().registerFilter(
