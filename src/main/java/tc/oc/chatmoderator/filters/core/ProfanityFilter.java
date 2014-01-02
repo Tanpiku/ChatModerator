@@ -1,32 +1,33 @@
 package tc.oc.chatmoderator.filters.core;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
+import tc.oc.chatmoderator.filters.LookAhead;
 import tc.oc.chatmoderator.filters.WeightedWordsFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
+import tc.oc.chatmoderator.messages.FixedWordMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.PatternUtils;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
 import tc.oc.chatmoderator.whitelist.Whitelist;
+import tc.oc.chatmoderator.words.CorrectedWord;
 import tc.oc.chatmoderator.words.Word;
 import tc.oc.chatmoderator.words.WordSet;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * WeightedFilter that filters out different levels of profanity.  Multiple patterns.
  */
-public class ProfanityFilter extends WeightedWordsFilter {
+public class ProfanityFilter extends WeightedWordsFilter implements LookAhead {
 
     private FixStyleApplicant.FixStyle defaultFixStyle;
 
@@ -55,12 +56,17 @@ public class ProfanityFilter extends WeightedWordsFilter {
     @Nullable
     @Override
     public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
-        WordSet wordSet = this.makeWordSet(message);
-
         Matcher matcher;
         Set<String> profanities = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
+
+        FixedWordMessage wordMessage = new FixedWordMessage(message, Pattern.compile(PatternUtils.getSplitPattern()));
+
+        List<CorrectedWord> wordList = this.split(wordMessage.getFixedWordSet().toList());
+        message.setFixed(this.evaluate(wordList, wordMessage.getFixedWordSet()).toString());
+
+        WordSet wordSet = this.makeWordSet(message);
 
         for (Word word : wordSet.toList()) {
             if (this.getWhitelist().containsWord(word, true)) {
@@ -98,5 +104,41 @@ public class ProfanityFilter extends WeightedWordsFilter {
         return message;
     }
 
+    @Override
+    public List<CorrectedWord> split(List<Word> messageWords) {
+        List<CorrectedWord> correctedWords = new ArrayList<>();
 
+        for (int i = 0; i < messageWords.size(); i++) {
+            for (int j = messageWords.size(); j >= 0; j--) {
+                if (i >= j) continue;
+
+                List<Word> subWordList = messageWords.subList(i, j);
+
+                StringBuilder builder = new StringBuilder();
+                for (Word subWord : subWordList) {
+                    builder.append(subWord.getWord());
+                }
+
+                for (Pattern p : this.getWeights().keySet()) {
+                    Matcher matcher = PatternUtils.makePatternWordSpecific(p).matcher(builder.toString());
+
+                    if (matcher.matches()) {
+                        ArrayList<Word> subWordListCopy = new ArrayList<>(subWordList.size());
+                        for (Word w : subWordList) {
+                            subWordListCopy.add(w);
+                        }
+
+                        correctedWords.add(new CorrectedWord(builder.toString(), subWordListCopy));
+                    }
+                }
+            }
+        }
+
+        return correctedWords;
+    }
+
+    @Override
+    public WordSet evaluate(List<CorrectedWord> correctedWords, WordSet wordSet) {
+        return CorrectedWord.replaceComponents(correctedWords, wordSet);
+    }
 }

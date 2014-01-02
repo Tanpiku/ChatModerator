@@ -5,6 +5,8 @@ import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.words.Word;
 import tc.oc.chatmoderator.words.WordSet;
 
+import java.util.regex.Pattern;
+
 /**
  * Factory class for building a set of Words.
  */
@@ -26,13 +28,31 @@ public class WordSetFactory {
     private boolean useFixed;
 
     /**
+     * The pattern to split the words by.
+     */
+    private Pattern splitPattern;
+
+    /**
      * Creates a {@link tc.oc.chatmoderator.words.factories.WordSetFactory} using the fixed message as a default.
      *
      * @param message The {@link tc.oc.chatmoderator.messages.FixedMessage} to base the {@link tc.oc.chatmoderator.words.WordSet} off of.
      */
+    public WordSetFactory(final FixedMessage message, Pattern splitPattern) {
+        this.message = Preconditions.checkNotNull(message);
+        this.useFixed = true;
+        this.splitPattern = Preconditions.checkNotNull(splitPattern);
+    }
+
+    public WordSetFactory(final FixedMessage message, Pattern splitPattern, boolean useFixed) {
+        this.message = Preconditions.checkNotNull(message);
+        this.useFixed = useFixed;
+        this.splitPattern = Preconditions.checkNotNull(splitPattern);
+    }
+
     public WordSetFactory(final FixedMessage message) {
         this.message = Preconditions.checkNotNull(message);
         this.useFixed = true;
+        this.splitPattern = Pattern.compile("\\s");
     }
 
     /**
@@ -44,6 +64,7 @@ public class WordSetFactory {
     public WordSetFactory(final FixedMessage message, boolean useFixed) {
         this.message = Preconditions.checkNotNull(message);
         this.useFixed = useFixed;;
+        this.splitPattern = Pattern.compile("\\s");
     }
 
     /**
@@ -54,7 +75,7 @@ public class WordSetFactory {
     public WordSetFactory build() {
         String base = useFixed ? message.getFixed() : message.getOriginal();
 
-        for (String token : base.split("\\s")) {
+        for (String token : base.split(this.splitPattern.toString())) {
             wordSet.appendWord(new Word(token, false));
         }
 
