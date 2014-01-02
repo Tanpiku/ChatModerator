@@ -99,7 +99,7 @@ public class LeetSpeakFilterFactory implements ChatModeratorFactory {
 
     /**
      * Gets the dictionary associated with this filter.  Typically called after {@code build()}.
-     * @return
+     * @return The dictionary
      */
     public Map<Character, List<Pattern>> getDictionary() {
         return this.dictionary;
