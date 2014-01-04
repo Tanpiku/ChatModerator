@@ -95,6 +95,7 @@ public abstract class Violation {
         sb.append(", message='").append(message).append('\'');
         sb.append(", cancelled=").append(cancelled);
         sb.append(", zone-type=").append(zoneType.name());
+        sb.append(", type=").append(this.getClass().getSimpleName());
         sb.append('}');
         return sb.toString();
     }

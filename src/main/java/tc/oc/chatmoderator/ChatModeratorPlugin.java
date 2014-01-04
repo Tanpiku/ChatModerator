@@ -21,7 +21,6 @@ import tc.oc.chatmoderator.whitelist.factories.WhitelistFactory;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
