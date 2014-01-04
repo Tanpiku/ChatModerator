@@ -139,7 +139,8 @@ public class ChatModeratorPlugin extends JavaPlugin {
                         this.getPlayerManager(),
                         new Permission("chatmoderator.filters.all-caps.exempt"),
                         getConfig().getInt("filters.all-caps.priority"),
-                        new WhitelistFactory(this, "filters.all-caps.whitelist").build().getWhitelist()
+                        new WhitelistFactory(this, "filters.all-caps.whitelist").build().getWhitelist(),
+                        (short) getConfig().getInt("filters.all-caps.max-length", -1)
                 ));
 
         moderatorListener.getFilterManager().registerFilter(

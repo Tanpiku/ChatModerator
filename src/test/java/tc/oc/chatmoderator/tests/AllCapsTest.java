@@ -44,7 +44,7 @@ public class AllCapsTest extends TestCase {
 
     @Test
     public void testAllCapsFilter() throws Exception {
-        Pattern pattern = AllCapsFilter.getPattern();
+        Pattern pattern = AllCapsFilter.getBasePattern(2);
 
         for (int i = 0; i < TEST_ITERATIONS; i++) {
             for (int j = 0; j < WORDS_PER_SENTENCE; j++) {

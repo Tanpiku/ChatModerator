@@ -26,16 +26,23 @@ import java.util.regex.Pattern;
  */
 public class AllCapsFilter extends WordFilter {
 
-    private static final Pattern pattern = Pattern.compile("^[^a-z]*$");
+    private final Pattern pattern;
+
+    private final short maxChars;
 
     /**
      * Publicly insatiable version of the AllCapsFilter.
      *
      * @param playerManager The base player manager.
      * @param exemptPermission The permission that exempts a player from the AllCapsFilter.
+     * @param maxChars The maximum number of characters before the filter kicks in.
      */
-    public AllCapsFilter(PlayerManager playerManager, Permission exemptPermission, int priority, Whitelist whitelist) {
+    public AllCapsFilter(PlayerManager playerManager, Permission exemptPermission, int priority, Whitelist whitelist, final short maxChars) {
         super(playerManager, exemptPermission, priority, true, whitelist, FixStyleApplicant.FixStyle.NONE);
+        Preconditions.checkArgument(maxChars > -1, "Max chars must be at least zero!");
+
+        this.maxChars = maxChars;
+        this.pattern = Pattern.compile("[A-Z0-9]{" + (maxChars+1) + ",}");
     }
 
     /**
@@ -58,15 +65,13 @@ public class AllCapsFilter extends WordFilter {
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
         Violation violation = new AllCapsViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(AllCapsViolation.class), upperCaseWords, type);
 
-        boolean first = true;
-
         for (Word word : wordSet.toList()) {
             if (this.whitelist.containsWord(word, false)) {
                 word.setChecked(true);
                 continue;
             }
 
-            matcher = AllCapsFilter.pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
+            matcher = this.pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
 
             while (matcher.find()) {
                 upperCaseWords.add(matcher.group().trim());
@@ -91,7 +96,7 @@ public class AllCapsFilter extends WordFilter {
      *
      * @return The pattern.
      */
-    public static Pattern getPattern() {
-        return AllCapsFilter.pattern;
+    public static Pattern getBasePattern(int maxChars) {
+        return Pattern.compile("[A-Z0-9]{" + maxChars + ",}");
     }
 }

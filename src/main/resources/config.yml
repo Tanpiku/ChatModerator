@@ -29,13 +29,11 @@ filters:
     all-caps:
         default-level: 12
         priority: 3
+        max-length: 2
         whitelist:
-          - "I"
           - "PGM"
           - "OCN"
           - "MC"
-          - ":D"
-          - ":P"
           - "OK"
     profanity:
         default-level: 10
