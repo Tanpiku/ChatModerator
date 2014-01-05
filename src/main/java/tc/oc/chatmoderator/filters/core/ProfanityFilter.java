@@ -5,11 +5,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
-import tc.oc.chatmoderator.filters.LookAhead;
 import tc.oc.chatmoderator.filters.WeightedWordsFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.messages.FixedWordMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.MessageUtils;
 import tc.oc.chatmoderator.util.PatternUtils;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 /**
  * WeightedFilter that filters out different levels of profanity.  Multiple patterns.
  */
-public class ProfanityFilter extends WeightedWordsFilter implements LookAhead {
+public class ProfanityFilter extends WeightedWordsFilter {
 
     private FixStyleApplicant.FixStyle defaultFixStyle;
 
@@ -63,8 +63,8 @@ public class ProfanityFilter extends WeightedWordsFilter implements LookAhead {
 
         FixedWordMessage wordMessage = new FixedWordMessage(message, Pattern.compile(PatternUtils.getSplitPattern()));
 
-        List<CorrectedWord> wordList = this.split(wordMessage.getFixedWordSet().toList());
-        message.setFixed(this.evaluate(wordList, wordMessage.getFixedWordSet()).toString());
+        List<CorrectedWord> wordList = MessageUtils.splitWithWeights(this.getWeights(), wordMessage.getFixedWordSet().toList());
+        message.setFixed(MessageUtils.evaluate(wordList, wordMessage.getFixedWordSet()).toString());
 
         WordSet wordSet = this.makeWordSet(message);
 
@@ -102,43 +102,5 @@ public class ProfanityFilter extends WeightedWordsFilter implements LookAhead {
         }
 
         return message;
-    }
-
-    @Override
-    public List<CorrectedWord> split(List<Word> messageWords) {
-        List<CorrectedWord> correctedWords = new ArrayList<>();
-
-        for (int i = 0; i < messageWords.size(); i++) {
-            for (int j = messageWords.size(); j >= 0; j--) {
-                if (i >= j) continue;
-
-                List<Word> subWordList = messageWords.subList(i, j);
-
-                StringBuilder builder = new StringBuilder();
-                for (Word subWord : subWordList) {
-                    builder.append(subWord.getWord());
-                }
-
-                for (Pattern p : this.getWeights().keySet()) {
-                    Matcher matcher = PatternUtils.makePatternWordSpecific(p).matcher(builder.toString());
-
-                    if (matcher.matches()) {
-                        ArrayList<Word> subWordListCopy = new ArrayList<>(subWordList.size());
-                        for (Word w : subWordList) {
-                            subWordListCopy.add(w);
-                        }
-
-                        correctedWords.add(new CorrectedWord(builder.toString(), subWordListCopy));
-                    }
-                }
-            }
-        }
-
-        return correctedWords;
-    }
-
-    @Override
-    public WordSet evaluate(List<CorrectedWord> correctedWords, WordSet wordSet) {
-        return CorrectedWord.replaceComponents(correctedWords, wordSet);
     }
 }
