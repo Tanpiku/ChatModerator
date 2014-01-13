@@ -109,55 +109,55 @@ public class ChatModeratorPlugin extends JavaPlugin {
      */
     private void setUpFilters(ChatModeratorListener moderatorListener) {
         moderatorListener.getFilterManager().registerFilter(
-                new DuplicateMessageFilter(
-                        this.getPlayerManager(),
-                        new Permission("chatmoderator.filters.duplicatemessage.exempt"),
-                        getConfig().getLong("config.delay-between-messages"),
-                        getConfig().getInt("filters.duplicate-messages.priority")
-                ));
+            new DuplicateMessageFilter(
+                this.getPlayerManager(),
+                new Permission("chatmoderator.filters.duplicatemessage.exempt"),
+                getConfig().getLong("config.delay-between-messages"),
+                getConfig().getInt("filters.duplicate-messages.priority")
+            ));
 
         moderatorListener.getFilterManager().registerFilter(
-                new IPFilter(
-                        this.getPlayerManager(),
-                        new Permission("chatmoderator.filters.ipfilter.exempt"),
-                        getConfig().getInt("filters.server-ip.priority"),
-                        FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style"))
-                ));
+            new IPFilter(
+                this.getPlayerManager(),
+                new Permission("chatmoderator.filters.ipfilter.exempt"),
+                getConfig().getInt("filters.server-ip.priority"),
+                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style"))
+            ));
 
         moderatorListener.getFilterManager().registerFilter(
-                new ProfanityFilter(
-                        this.getPlayerManager(),
-                        new Permission("chatmoderator.filters.profanity.exempt"),
-                        new TemplateFactory(this, "filters.profanity").build().getWeights(),
-                        getConfig().getInt("filters.profanity.priority"),
-                        new WhitelistFactory(this, "filters.profanity.whitelist").build().getWhitelist(),
-                        FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.profanity.fix-style"))
-                ));
+            new ProfanityFilter(
+                this.getPlayerManager(),
+                new Permission("chatmoderator.filters.profanity.exempt"),
+                new TemplateFactory(this, "filters.profanity").build().getWeights(),
+                getConfig().getInt("filters.profanity.priority"),
+                new WhitelistFactory(this, "filters.profanity.whitelist").build().getWhitelist(),
+                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.profanity.fix-style"))
+            ));
 
         moderatorListener.getFilterManager().registerFilter(
-                new AllCapsFilter(
-                        this.getPlayerManager(),
-                        new Permission("chatmoderator.filters.all-caps.exempt"),
-                        getConfig().getInt("filters.all-caps.priority"),
-                        new WhitelistFactory(this, "filters.all-caps.whitelist").build().getWhitelist(),
-                        (short) getConfig().getInt("filters.all-caps.max-length", -1)
-                ));
+            new AllCapsFilter(
+                this.getPlayerManager(),
+                new Permission("chatmoderator.filters.all-caps.exempt"),
+                getConfig().getInt("filters.all-caps.priority"),
+                new WhitelistFactory(this, "filters.all-caps.whitelist").build().getWhitelist(),
+                (short) getConfig().getInt("filters.all-caps.max-length", -1)
+            ));
 
         moderatorListener.getFilterManager().registerFilter(
-                new RepeatedCharactersFilter(
-                        this.getPlayerManager(),
-                        new Permission("chatmoderator.filters.repeated.exempt"),
-                        getConfig().getInt("filters.repeated-characters.count"),
-                        getConfig().getInt("filters.repeated-characters.priority")
-                ));
+            new RepeatedCharactersFilter(
+                this.getPlayerManager(),
+                new Permission("chatmoderator.filters.repeated.exempt"),
+                getConfig().getInt("filters.repeated-characters.count"),
+                getConfig().getInt("filters.repeated-characters.priority")
+            ));
 
         moderatorListener.getFilterManager().registerFilter(
-                new LeetSpeakFilter(
-                        this.getPlayerManager(),
-                        new Permission("chatmoderator.filters.leet.exempt"),
-                        getConfig().getInt("filters.leet.priority"),
-                        new LeetSpeakFilterFactory(this, new File(this.getDataFolder(), "dictionary.yml"), "dictionary").build().getDictionary()
-                ));
+            new LeetSpeakFilter(
+                this.getPlayerManager(),
+                new Permission("chatmoderator.filters.leet.exempt"),
+                getConfig().getInt("filters.leet.priority"),
+                new LeetSpeakFilterFactory(this, new File(this.getDataFolder(), "dictionary.yml"), "dictionary").build().getDictionary()
+            ));
     }
 
     /**
