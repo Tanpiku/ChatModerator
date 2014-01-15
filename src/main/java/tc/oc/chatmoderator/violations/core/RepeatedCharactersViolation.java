@@ -2,7 +2,9 @@ package tc.oc.chatmoderator.violations.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.joda.time.Instant;
+import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -29,8 +31,8 @@ public class RepeatedCharactersViolation extends Violation {
      * @param repeatedCharacters The selection of matches that didn't pass the {@link tc.oc.chatmoderator.filters.core.RepeatedCharactersFilter}
      * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} where the violation occurred.
      */
-    public RepeatedCharactersViolation(Instant time, OfflinePlayer player, String message, double level, List<String> repeatedCharacters, ZoneType zoneType) {
-        super(time, player, message, level, true, zoneType, FixStyleApplicant.FixStyle.NONE);
+    public RepeatedCharactersViolation(Instant time, OfflinePlayer player, FixedMessage message, double level, List<String> repeatedCharacters, ZoneType zoneType, Event event) {
+        super(time, player, message, level, true, zoneType, FixStyleApplicant.FixStyle.NONE, event);
 
         this.repeatedCharacters = Preconditions.checkNotNull(repeatedCharacters);
     }

@@ -2,6 +2,7 @@ package tc.oc.chatmoderator.filters.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 import org.joda.time.Duration;
 import org.joda.time.Instant;
@@ -40,7 +41,7 @@ public class DuplicateMessageFilter extends Filter {
      * @return The state of the message after running this filter.
      */
     @Override
-    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
+    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
         PlayerViolationManager violationSet = this.getPlayerManager().getViolationSet(player);
 
         Instant now = Instant.now();
@@ -54,7 +55,7 @@ public class DuplicateMessageFilter extends Filter {
         }
 
         if (lastMessage.withDurationAdded(delay, 1).isAfter(now)) {
-            violationSet.addViolation(new DuplicateMessageViolation(message.getTimeSent(), player, message.getOriginal(), difference, type));
+            violationSet.addViolation(new DuplicateMessageViolation(message.getTimeSent(), player, message, difference, type, event));
             message.setFixed(null);
         } else {
             violationSet.setLastMessageTime(now);

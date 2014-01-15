@@ -129,6 +129,26 @@ public final class PlayerViolationManager {
         return violations;
     }
 
+    /**
+     * Gets the violation by querying for the specific hash code associated with the
+     * {@link org.bukkit.event.player.AsyncPlayerChatEvent} that the original violation message was sent in.
+     *
+     * @param hashcode The hash code to query on.
+     *
+     * @return The {@link tc.oc.chatmoderator.violations.Violation} associated with that hashcode.
+     */
+    public List<Violation> getViolationsForHashCode(int hashcode) {
+        List<Violation> violations = new ArrayList<>();
+
+        for (Violation violation : this.getAllViolations()) {
+            if (violation.getEvent().hashCode() == hashcode) {
+                violations.add(violation);
+            }
+        }
+
+        return violations;
+    }
+
     public void setLastMessageTime(Instant time) {
         this.lastMessageTime = Preconditions.checkNotNull(time);
     }

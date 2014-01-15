@@ -1,6 +1,7 @@
 package tc.oc.chatmoderator.filters;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.messages.FixedMessage;
@@ -40,7 +41,7 @@ public abstract class WeightedWordsFilter extends WeightedFilter {
 
     @Nullable
     @Override
-    public abstract FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type);
+    public abstract FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event);
 
     protected WordSet makeWordSet(final FixedMessage message) {
         WordSetFactory factory = new WordSetFactory(message, this.useFixed);

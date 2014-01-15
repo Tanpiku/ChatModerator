@@ -1,6 +1,7 @@
 package tc.oc.chatmoderator.messages;
 
 import com.google.common.base.Preconditions;
+
 import org.joda.time.Instant;
 
 import javax.annotation.Nonnull;
@@ -33,9 +34,9 @@ public class FixedMessage {
      * @param original The original message that was sent.
      */
     public FixedMessage(final String original, final Instant timeSent) {
-        this.original = original;
+        this.original = new String(Preconditions.checkNotNull(original, "original"));
+        this.fixed = new String(Preconditions.checkNotNull(original, "original"));
         this.timeSent = Preconditions.checkNotNull(timeSent, "time");
-        this.fixed = null;
     }
 
     /**
@@ -44,10 +45,9 @@ public class FixedMessage {
      * @param original The original message that was sent.
      */
     public FixedMessage(final String original, final String fixed, final Instant timeSent) {
-        this.original = original;
-        this.fixed = fixed;
+        this.original = new String(Preconditions.checkNotNull(original, "original"));
+        this.fixed = new String(Preconditions.checkNotNull(fixed, "fixed"));
         this.timeSent = Preconditions.checkNotNull(timeSent, "time");
-        this.fixed = null;
     }
 
     /**

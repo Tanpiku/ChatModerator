@@ -2,7 +2,9 @@ package tc.oc.chatmoderator.violations;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.joda.time.Instant;
+import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.zones.ZoneType;
 
@@ -13,16 +15,17 @@ public abstract class Violation {
     protected final Instant time;
     protected final OfflinePlayer player;
     protected double level;
-    protected final String message;
+    protected final FixedMessage message;
     protected boolean cancelled = false;
     protected boolean fixed;
     protected final ZoneType zoneType;
     protected FixStyleApplicant.FixStyle fixStyle;
+    protected final Event event;
 
     /**
      * For subclasses only.
      */
-    protected Violation(final Instant time, final OfflinePlayer player, final String message, double level, boolean fixed, final ZoneType zoneType, final FixStyleApplicant.FixStyle fixStyle) {
+    protected Violation(final Instant time, final OfflinePlayer player, final FixedMessage message, double level, boolean fixed, final ZoneType zoneType, final FixStyleApplicant.FixStyle fixStyle, Event event) {
         this.time = Preconditions.checkNotNull(time, "Time");
         this.player = Preconditions.checkNotNull(player, "Player");
         this.message = Preconditions.checkNotNull(message, "Message");
@@ -30,6 +33,7 @@ public abstract class Violation {
         this.fixed = fixed;
         this.zoneType = Preconditions.checkNotNull(zoneType, "Zone type");
         this.fixStyle = fixStyle;
+        this.event = Preconditions.checkNotNull(event, "event");
     }
 
     /**
@@ -46,7 +50,7 @@ public abstract class Violation {
      *
      * @return The message.
      */
-    public final String getMessage() {
+    public final FixedMessage getMessage() {
         return this.message;
     }
 
@@ -142,5 +146,14 @@ public abstract class Violation {
 
     public void setFixStyle(FixStyleApplicant.FixStyle fixStyle) {
         this.fixStyle = Preconditions.checkNotNull(fixStyle);
+    }
+
+    /**
+     * Gets the hash code from the original event.
+     *
+     * @return The hash code.
+     */
+    public final Event getEvent() {
+        return this.event;
     }
 }

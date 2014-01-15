@@ -3,6 +3,7 @@ package tc.oc.chatmoderator.filters.core;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
@@ -54,11 +55,11 @@ public class LeetSpeakFilter extends Filter {
      */
     @Nullable
     @Override
-    public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
+    public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
 
         PlayerViolationManager violations = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "Player"));
         ArrayList<String> words = new ArrayList<>();
-        Violation violation = new LeetSpeakViolation(message.getTimeSent(), player, message.getOriginal(), violations.getViolationLevel(LeetSpeakViolation.class), words, type);
+        Violation violation = new LeetSpeakViolation(message.getTimeSent(), player, message, violations.getViolationLevel(LeetSpeakViolation.class), words, type, event);
 
         for (Pattern pattern : this.patterns) {
 

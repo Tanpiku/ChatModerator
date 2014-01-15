@@ -2,6 +2,7 @@ package tc.oc.chatmoderator.filters.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
@@ -44,12 +45,12 @@ public class RepeatedCharactersFilter extends Filter {
      */
     @Nullable
     @Override
-    public FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type) {
+    public FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type, Event event) {
         Matcher matcher = this.pattern.matcher(message.getFixed());
         List<String> repeatedCharacters = new ArrayList<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "player"));
-        Violation violation = new RepeatedCharactersViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(RepeatedCharactersViolation.class), repeatedCharacters, type);
+        Violation violation = new RepeatedCharactersViolation(message.getTimeSent(), player, message, violationManager.getViolationLevel(RepeatedCharactersViolation.class), repeatedCharacters, type, event);
 
         while(matcher.find()) {
             repeatedCharacters.add(matcher.group());

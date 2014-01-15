@@ -2,6 +2,7 @@ package tc.oc.chatmoderator.filters.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
@@ -55,7 +56,7 @@ public class ProfanityFilter extends WeightedWordsFilter {
      */
     @Nullable
     @Override
-    public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
+    public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
         Matcher matcher;
         Set<String> profanities = new HashSet<>();
 
@@ -76,7 +77,7 @@ public class ProfanityFilter extends WeightedWordsFilter {
 
             for(Pattern pattern : this.getWeights().keySet()) {
 
-                Violation violation = new ProfanityViolation(message.getTimeSent(), player, message.getOriginal(), profanities, type, FixStyleApplicant.FixStyle.MAGIC);
+                Violation violation = new ProfanityViolation(message.getTimeSent(), player, message, profanities, type, FixStyleApplicant.FixStyle.MAGIC, event);
                 matcher = pattern.matcher(Preconditions.checkNotNull(word.getWord(), "word"));
 
                 while (matcher.find()) {

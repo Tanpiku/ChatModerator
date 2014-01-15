@@ -2,6 +2,7 @@ package tc.oc.chatmoderator.filters;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 
 import tc.oc.chatmoderator.PlayerManager;
@@ -77,6 +78,6 @@ public abstract class Filter implements Comparable<Filter> {
      * @return The state of the message after running this filter.
      */
     @Nullable
-    public abstract FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type);
+    public abstract FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type, Event event);
 
 }

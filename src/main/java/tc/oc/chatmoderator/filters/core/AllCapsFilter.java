@@ -2,6 +2,7 @@ package tc.oc.chatmoderator.filters.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
 import org.bukkit.permissions.Permission;
 import tc.oc.chatmoderator.PlayerManager;
 import tc.oc.chatmoderator.PlayerViolationManager;
@@ -56,14 +57,14 @@ public class AllCapsFilter extends WordFilter {
      * @return The state of the message after running this filter.
      */
     @Override
-    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type) {
+    public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
         WordSet wordSet = this.makeWordSet(message);
 
         Matcher matcher = null;
         Set<String> upperCaseWords = new HashSet<>();
 
         PlayerViolationManager violationManager = this.getPlayerManager().getViolationSet(player);
-        Violation violation = new AllCapsViolation(message.getTimeSent(), player, message.getOriginal(), violationManager.getViolationLevel(AllCapsViolation.class), upperCaseWords, type);
+        Violation violation = new AllCapsViolation(message.getTimeSent(), player, message, violationManager.getViolationLevel(AllCapsViolation.class), upperCaseWords, type, event);
 
         for (Word word : wordSet.toList()) {
             if (this.whitelist.containsWord(word, false)) {
