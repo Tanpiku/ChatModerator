@@ -54,7 +54,7 @@ public final class ChatModeratorListener implements Listener {
         return this.zoneManager;
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
         Zone chatZone = this.getZoneManager().getZone(ZoneType.CHAT);
 
