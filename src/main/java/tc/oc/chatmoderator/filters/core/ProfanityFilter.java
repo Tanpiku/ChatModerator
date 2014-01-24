@@ -10,6 +10,7 @@ import tc.oc.chatmoderator.filters.WeightedWordsFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.messages.FixedWordMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.FixStyleApplicant.FixStyle;
 import tc.oc.chatmoderator.util.MessageUtils;
 import tc.oc.chatmoderator.util.PatternUtils;
 import tc.oc.chatmoderator.violations.Violation;
@@ -83,7 +84,7 @@ public class ProfanityFilter extends WeightedWordsFilter {
                 while (matcher.find()) {
                     profanities.add(matcher.group());
 
-                    word.setWord(FixStyleApplicant.fixWord(word, violation.getFixStyle()).getWord());
+                    word.setWord(FixStyleApplicant.fixWord(word, FixStyle.NONE).getWord());
                     message.setFixed(wordSet.toString());
                 }
 

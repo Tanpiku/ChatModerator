@@ -121,7 +121,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
                 this.getPlayerManager(),
                 new Permission("chatmoderator.filters.ipfilter.exempt"),
                 getConfig().getInt("filters.server-ip.priority"),
-                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style"))
+                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style", "NONE"))
             ));
 
         moderatorListener.getFilterManager().registerFilter(
@@ -131,7 +131,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
                 new TemplateFactory(this, "filters.profanity").build().getWeights(),
                 getConfig().getInt("filters.profanity.priority"),
                 new WhitelistFactory(this, "filters.profanity.whitelist").build().getWhitelist(),
-                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.profanity.fix-style"))
+                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.profanity.fix-style", "NONE"))
             ));
 
         moderatorListener.getFilterManager().registerFilter(

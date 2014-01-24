@@ -13,6 +13,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.FixStyleApplicant.FixStyle;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ServerIPViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -67,7 +68,7 @@ public class IPFilter extends Filter {
                 e.printStackTrace();
             }
 
-            message.setFixed(message.getFixed().replaceFirst(matcher.group(), FixStyleApplicant.fixString(matcher.group(), violation.getFixStyle())));
+            message.setFixed(message.getFixed().replaceFirst(matcher.group(), FixStyleApplicant.fixString(matcher.group(), FixStyle.NONE)));
         }
 
         if (ipAddresses.size() > 0) {

@@ -57,6 +57,7 @@ public class RepeatedCharactersFilter extends Filter {
 
             char replace = matcher.group().length() > 0 ? matcher.group().charAt(0) : ' ';
 
+            // We still need to keep this here because it allows us to catch profanity with many characters
             message.setFixed(message.getFixed().replaceFirst(Pattern.quote(matcher.group()), replace + ""));
         }
 

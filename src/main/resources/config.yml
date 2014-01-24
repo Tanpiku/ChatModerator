@@ -18,12 +18,11 @@ filters:
     server-ip:
         default-level: 4
         priority: 1
-        fix-style: DASH
     leet:
         default-level: 2
         priority: 4
     repeated-characters:
-        default-level: 10
+        default-level: 0
         priority: 2
         count: 5
     all-caps:
@@ -38,7 +37,6 @@ filters:
     profanity:
         default-level: 10
         priority: 5
-        fix-style: MAGIC
         whitelist:
             - "snowball|snowballs"
         templates:

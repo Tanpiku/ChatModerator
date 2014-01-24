@@ -9,6 +9,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.WordFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.FixStyleApplicant.FixStyle;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.AllCapsViolation;
 import tc.oc.chatmoderator.whitelist.Whitelist;
@@ -77,8 +78,7 @@ public class AllCapsFilter extends WordFilter {
             while (matcher.find()) {
                 upperCaseWords.add(matcher.group().trim());
 
-                word.setWord(word.getWord().replaceFirst(Pattern.quote(matcher.group()), matcher.group().toLowerCase()));
-                message.setFixed(wordSet.toString());
+                FixStyleApplicant.fixString(message.getFixed(), FixStyle.NONE);
             }
 
             if (upperCaseWords.size() > 0) {
