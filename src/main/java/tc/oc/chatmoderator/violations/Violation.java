@@ -21,11 +21,16 @@ public abstract class Violation {
     protected final ZoneType zoneType;
     protected FixStyleApplicant.FixStyle fixStyle;
     protected final Event event;
+    protected boolean forceNoSend;
+
+    protected Violation(final Instant time, final OfflinePlayer player, final FixedMessage message, double level, boolean fixed, final ZoneType zoneType, final FixStyleApplicant.FixStyle fixStyle, Event event) {
+        this(time, player,message, level, fixed, zoneType, fixStyle, event, false);
+    }
 
     /**
      * For subclasses only.
      */
-    protected Violation(final Instant time, final OfflinePlayer player, final FixedMessage message, double level, boolean fixed, final ZoneType zoneType, final FixStyleApplicant.FixStyle fixStyle, Event event) {
+    protected Violation(final Instant time, final OfflinePlayer player, final FixedMessage message, double level, boolean fixed, final ZoneType zoneType, final FixStyleApplicant.FixStyle fixStyle, Event event, boolean forceNoSend) {
         this.time = Preconditions.checkNotNull(time, "Time");
         this.player = Preconditions.checkNotNull(player, "Player");
         this.message = Preconditions.checkNotNull(message, "Message");
@@ -34,6 +39,7 @@ public abstract class Violation {
         this.zoneType = Preconditions.checkNotNull(zoneType, "Zone type");
         this.fixStyle = fixStyle;
         this.event = Preconditions.checkNotNull(event, "event");
+        this.forceNoSend = forceNoSend;
     }
 
     /**
@@ -155,5 +161,13 @@ public abstract class Violation {
      */
     public final Event getEvent() {
         return this.event;
+    }
+
+    public final boolean isForceNoSend() {
+        return this.forceNoSend;
+    }
+
+    public final void setForceNoSend(boolean forceNoSend) {
+        this.forceNoSend = forceNoSend;
     }
 }

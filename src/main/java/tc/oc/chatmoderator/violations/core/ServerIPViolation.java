@@ -32,7 +32,7 @@ public class ServerIPViolation extends Violation {
      * @param zoneType The {@link tc.oc.chatmoderator.zones.ZoneType} where the violation occurred.
      */
     public ServerIPViolation(final Instant time, final OfflinePlayer player, final FixedMessage message, final double level, final Set<InetAddress> ipAddresses, ZoneType zoneType, FixStyleApplicant.FixStyle fixStyle, Event event) {
-        super(time, player, message, level, true, zoneType, fixStyle, event);
+        super(time, player, message, level, true, zoneType, fixStyle, event, true);
        
         for (InetAddress ipAddress : Preconditions.checkNotNull(ipAddresses, "IP addresses")) {
             this.ipAddresses.add(Preconditions.checkNotNull(ipAddress, "IP address"));
