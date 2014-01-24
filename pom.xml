@@ -65,6 +65,11 @@
 	        <version>0.4.0-SNAPSHOT</version>
 	        <scope>provided</scope>
 	    </dependency>
+		<dependency>
+            <groupId>com.github.rmsy.Channels</groupId>
+            <artifactId>Channels</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <repositories>
