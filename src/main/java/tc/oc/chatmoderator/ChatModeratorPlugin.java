@@ -18,6 +18,7 @@ import tc.oc.chatmoderator.filters.core.*;
 import tc.oc.chatmoderator.listeners.ChatModeratorListener;
 import tc.oc.chatmoderator.listeners.DebugListener;
 import tc.oc.chatmoderator.settings.Settings;
+import tc.oc.chatmoderator.scores.ScoreUpdateListener;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.whitelist.factories.WhitelistFactory;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -85,6 +86,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
 
         this.listeners.add(moderatorListener);
         this.listeners.add(this.playerManager);
+        this.listeners.add(new ScoreUpdateListener(this.getPlayerManager()));
 
         // And register all the events.
         for (Listener listener : this.listeners) {
