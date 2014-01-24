@@ -21,6 +21,7 @@ public final class PlayerViolationManager {
     private final OfflinePlayer player;
     private final Map<Class<? extends Violation>, ViolationSet> violations = new HashMap<>();
     private Instant lastMessageTime;
+    private double score;
 
     /**
      * Creates a new violation set.
@@ -31,6 +32,7 @@ public final class PlayerViolationManager {
         this.player = Preconditions.checkNotNull(player, "Player");
         
         setUpViolations();
+        this.score = 0;
     }
 
     /**
@@ -155,6 +157,14 @@ public final class PlayerViolationManager {
 
     public Instant getLastMessageTime() {
         return this.lastMessageTime;
+    }
+
+    public double getScore() {
+        return this.score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 
     /**

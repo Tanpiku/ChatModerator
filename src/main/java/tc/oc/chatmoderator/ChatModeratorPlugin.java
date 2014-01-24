@@ -84,6 +84,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
         setUpZones(moderatorListener);
 
         this.listeners.add(moderatorListener);
+        this.listeners.add(this.playerManager);
 
         // And register all the events.
         for (Listener listener : this.listeners) {
