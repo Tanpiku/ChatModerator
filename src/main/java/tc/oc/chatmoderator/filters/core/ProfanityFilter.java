@@ -13,6 +13,7 @@ import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.util.FixStyleApplicant.FixStyle;
 import tc.oc.chatmoderator.util.MessageUtils;
 import tc.oc.chatmoderator.util.PatternUtils;
+import tc.oc.chatmoderator.util.PermissionUtils;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ProfanityViolation;
 import tc.oc.chatmoderator.whitelist.Whitelist;
@@ -58,6 +59,10 @@ public class ProfanityFilter extends WeightedWordsFilter {
     @Nullable
     @Override
     public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
+        if (PermissionUtils.isPlayerExempt(player, this.getExemptPermission())) {
+            return message;
+        }
+
         Matcher matcher;
         Set<String> profanities = new HashSet<>();
 

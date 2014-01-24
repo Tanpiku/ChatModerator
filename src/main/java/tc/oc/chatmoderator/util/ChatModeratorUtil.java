@@ -8,6 +8,8 @@ import tc.oc.chatmoderator.violations.core.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.permissions.Permission;
+
 /**
  * Simple key-value store to map a short-name to the class representing a filter or violation.
  */
@@ -22,6 +24,11 @@ public class ChatModeratorUtil {
      * The key-value store for short-names to violations.
      */
     public static final Map<String, Class<? extends Violation>> violations = new HashMap<>();
+
+    /**
+     * The key-value store for short-names to violations.
+     */
+    public static final Map<Class<? extends Filter>, Permission> permissions = new HashMap<>();
 
     /**
      * Sets up both the key-value stores.
@@ -40,5 +47,12 @@ public class ChatModeratorUtil {
         violations.put("all-caps", AllCapsViolation.class);
         violations.put("profanity", ProfanityViolation.class);
         violations.put("leet", LeetSpeakViolation.class);
+
+        permissions.put(AllCapsFilter.class, new Permission("chatmoderator.filter.allcaps.exempt"));
+        permissions.put(DuplicateMessageFilter.class, new Permission("chatmoderator.filter.duplicatemessage.exempt"));
+        permissions.put(IPFilter.class, new Permission("chatmoderator.filter.ipfilter.exempt"));
+        permissions.put(RepeatedCharactersFilter.class, new Permission("chatmoderator.filter.repeatedcharacter.exempt"));
+        permissions.put(ProfanityFilter.class, new Permission("chatmoderator.filter.profanity.exempt"));
+        permissions.put(LeetSpeakFilter.class, new Permission("chatmoderator.filter.leetspeak.exempt"));
     }
 }

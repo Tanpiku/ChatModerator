@@ -146,7 +146,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
         moderatorListener.getFilterManager().registerFilter(
             new RepeatedCharactersFilter(
                 this.getPlayerManager(),
-                new Permission("chatmoderator.filters.repeated.exempt"),
+                new Permission("chatmoderator.filters.repeatedcharacter.exempt"),
                 getConfig().getInt("filters.repeated-characters.count"),
                 getConfig().getInt("filters.repeated-characters.priority")
             ));

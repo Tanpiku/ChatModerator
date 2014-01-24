@@ -11,6 +11,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.PermissionUtils;
 import tc.oc.chatmoderator.violations.core.DuplicateMessageViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
 
@@ -42,6 +43,10 @@ public class DuplicateMessageFilter extends Filter {
      */
     @Override
     public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
+        if (PermissionUtils.isPlayerExempt(player, this.getExemptPermission())) {
+            return message;
+        }
+
         PlayerViolationManager violationSet = this.getPlayerManager().getViolationSet(player);
 
         Instant now = Instant.now();

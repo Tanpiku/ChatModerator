@@ -20,9 +20,18 @@ permissions:
         description: Exempts a player from all filters
         default: false
         children:
+            chatmoderator.filter.allcaps.exempt: true
+            chatmoderator.filter.duplicatemessage.exempt: true
             chatmoderator.filter.ipfilter.exempt: true
             chatmoderator.filter.profanity.exempt: true
             chatmoderator.filter.repeatedcharacter.exempt: true
+            chatmoderator.filter.leet.exempt: true
+    chatmoderator.filter.all-caps.exempt:
+        description: Exempts a player from the AllCapsFilter
+        default: false
+    chatmoderator.filter.duplicatemessage.exempt:
+        description: Exempts a player from the DuplicatMessagesFilter
+        default: false
     chatmoderator.filter.ipfilter.exempt:
         description: Exempts a player from the ServerIPFilter
         default: false
@@ -31,4 +40,7 @@ permissions:
         default: false
     chatmoderator.filter.repeatedcharacter.exempt:
         description: Exempts a player from the RepeatedCharacterFilter
+        default: false
+    chatmoderator.filter.leet.exempt:
+        description: Exempts a player from the LeetSpeakFilter
         default: false

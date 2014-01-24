@@ -9,6 +9,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.WordFilter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.PermissionUtils;
 import tc.oc.chatmoderator.util.FixStyleApplicant.FixStyle;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.AllCapsViolation;
@@ -59,6 +60,10 @@ public class AllCapsFilter extends WordFilter {
      */
     @Override
     public @Nullable FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
+        if (PermissionUtils.isPlayerExempt(player, this.getExemptPermission())) {
+            return message;
+        }
+
         WordSet wordSet = this.makeWordSet(message);
 
         Matcher matcher = null;

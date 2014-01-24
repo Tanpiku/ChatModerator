@@ -10,6 +10,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.PermissionUtils;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.LeetSpeakViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -56,6 +57,9 @@ public class LeetSpeakFilter extends Filter {
     @Nullable
     @Override
     public FixedMessage filter(FixedMessage message, OfflinePlayer player, ZoneType type, Event event) {
+        if (PermissionUtils.isPlayerExempt(player, this.getExemptPermission())) {
+            return message;
+        }
 
         PlayerViolationManager violations = this.getPlayerManager().getViolationSet(Preconditions.checkNotNull(player, "Player"));
         ArrayList<String> words = new ArrayList<>();

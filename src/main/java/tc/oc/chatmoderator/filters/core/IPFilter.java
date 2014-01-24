@@ -13,6 +13,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.PermissionUtils;
 import tc.oc.chatmoderator.util.FixStyleApplicant.FixStyle;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.ServerIPViolation;
@@ -52,9 +53,10 @@ public class IPFilter extends Filter {
     @Nullable
     @Override
     public FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type, Event event) {
-//      if(((Player) player).hasPermission(this.getExemptPermission()))
-//          return message;
-     
+        if (PermissionUtils.isPlayerExempt(player, this.getExemptPermission())) {
+            return message;
+        }
+
         Matcher matcher = pattern.matcher(Preconditions.checkNotNull(message.getFixed()));
         Set<InetAddress> ipAddresses = new HashSet<>();
 

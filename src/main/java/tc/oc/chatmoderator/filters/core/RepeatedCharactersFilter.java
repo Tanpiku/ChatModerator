@@ -9,6 +9,7 @@ import tc.oc.chatmoderator.PlayerViolationManager;
 import tc.oc.chatmoderator.filters.Filter;
 import tc.oc.chatmoderator.messages.FixedMessage;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
+import tc.oc.chatmoderator.util.PermissionUtils;
 import tc.oc.chatmoderator.violations.Violation;
 import tc.oc.chatmoderator.violations.core.RepeatedCharactersViolation;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -46,6 +47,10 @@ public class RepeatedCharactersFilter extends Filter {
     @Nullable
     @Override
     public FixedMessage filter(FixedMessage message, final OfflinePlayer player, ZoneType type, Event event) {
+        if (PermissionUtils.isPlayerExempt(player, this.getExemptPermission())) {
+            return message;
+        }
+
         Matcher matcher = this.pattern.matcher(message.getFixed());
         List<String> repeatedCharacters = new ArrayList<>();
 
