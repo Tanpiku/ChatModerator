@@ -19,6 +19,7 @@ import tc.oc.chatmoderator.listeners.ChatModeratorListener;
 import tc.oc.chatmoderator.listeners.DebugListener;
 import tc.oc.chatmoderator.settings.Settings;
 import tc.oc.chatmoderator.scores.ScoreUpdateListener;
+import tc.oc.chatmoderator.settings.Settings;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.whitelist.factories.WhitelistFactory;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -177,6 +178,7 @@ public class ChatModeratorPlugin extends JavaPlugin {
     private void setUpZones(ChatModeratorListener moderatorListener) {
         moderatorListener.getZoneManager().registerZone(ZoneType.CHAT, new ZoneFactory(this, "zones.chat").build().getZone());
         moderatorListener.getZoneManager().registerZone(ZoneType.SIGN, new ZoneFactory(this, "zones.signs").build().getZone());
+        moderatorListener.getZoneManager().registerZone(ZoneType.CHANNEL, new ZoneFactory(this, "zones.channel").build().getZone());
     }
 
     /**

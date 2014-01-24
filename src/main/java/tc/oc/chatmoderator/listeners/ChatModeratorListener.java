@@ -1,5 +1,6 @@
 package tc.oc.chatmoderator.listeners;
 
+import com.github.rmsy.channels.event.ChannelMessageEvent;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -92,6 +93,48 @@ public final class ChatModeratorListener implements Listener {
         if (event.getMessage() == null) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerMessageChannel(final ChannelMessageEvent event) {
+        Zone channelZone = this.getZoneManager().getZone(ZoneType.CHANNEL);
+
+        if (!channelZone.isEnabled()) {
+            return;
+        }
+
+        String message = Preconditions.checkNotNull(event, "Event").getMessage();
+        OfflinePlayer player = Bukkit.getOfflinePlayer(event.getSender().getName());
+
+        FixedMessage fixedMessage = new FixedMessage(message, Instant.now());
+        fixedMessage.setFixed(new String(fixedMessage.getOriginal()));
+
+        for (Filter filter : this.getFilterManager().getFiltersForZone(channelZone)) {
+            if (fixedMessage.getFixed() == null || fixedMessage.getFixed().equals("")) {
+                break;
+            }
+
+            filter.filter(fixedMessage, player, ZoneType.CHANNEL, event);
+        }
+
+        event.setMessage(fixedMessage.getOriginal());
+
+        for (Violation v : plugin.getPlayerManager().getViolationSet(player).getViolationsForTime(fixedMessage.getTimeSent())) {
+            if (v.isCancelled()) {
+                event.setMessage(null);
+                event.setCancelled(true);
+                break;
+            }
+
+            if (v.isFixed()) {
+                event.setMessage(fixedMessage.getFixed());
+            }
+        }
+
+        if (event.getMessage() == null) {
+            event.setCancelled(true);
+        }
+
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

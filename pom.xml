@@ -59,6 +59,11 @@
             <version>4.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+        	<groupId>com.github.rmsy.Channels</groupId>
+        	<artifactId>Channels</artifactId>
+        	<version>1.0.3-SNAPSHOT</version>
+        </dependency>
 	    <dependency>
 	        <groupId>me.anxuiz</groupId>
 	        <artifactId>bukkit-settings</artifactId>

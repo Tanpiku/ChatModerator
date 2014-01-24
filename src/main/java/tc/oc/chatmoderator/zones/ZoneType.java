@@ -5,6 +5,6 @@ package tc.oc.chatmoderator.zones;
  */
 public enum ZoneType {
 
-    CHAT, SIGN, NONE;
+    CHAT, SIGN, CHANNEL, NONE;
 
 }

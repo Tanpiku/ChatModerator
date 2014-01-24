@@ -4,13 +4,16 @@ debug:
     enabled: false
 zones:
     chat:
-        enabled: true
+        enabled: false
         excluded-filters:
     signs:
         enabled: true
         excluded-filters:
             - duplicate-messages
             - leet
+    channel:
+        enabled: true
+        excluded-filters:
 filters:
     duplicate-messages:
         default-level: 10
