@@ -16,6 +16,7 @@ import tc.oc.chatmoderator.factories.core.ZoneFactory;
 import tc.oc.chatmoderator.filters.core.*;
 import tc.oc.chatmoderator.listeners.ChatModeratorListener;
 import tc.oc.chatmoderator.listeners.DebugListener;
+import tc.oc.chatmoderator.settings.Settings;
 import tc.oc.chatmoderator.util.FixStyleApplicant;
 import tc.oc.chatmoderator.whitelist.factories.WhitelistFactory;
 import tc.oc.chatmoderator.zones.ZoneType;
@@ -74,6 +75,9 @@ public class ChatModeratorPlugin extends JavaPlugin {
             this.listeners.add(new DebugListener());
         }
         
+        // Register settings
+        Settings.register();
+
         // Initialize the listener, add filters as necessary
         ChatModeratorListener moderatorListener = new ChatModeratorListener(this);
         setUpFilters(moderatorListener);
