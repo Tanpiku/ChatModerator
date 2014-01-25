@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tc.oc</groupId>
-    <artifactId>ChatModerator</artifactId>
+    <artifactId>chatmoderator</artifactId>
     <version>0.7-SNAPSHOT</version>
 
     <name>ChatModerator</name>
