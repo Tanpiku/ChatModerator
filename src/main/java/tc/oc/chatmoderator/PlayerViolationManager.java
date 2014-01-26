@@ -21,8 +21,10 @@ public final class PlayerViolationManager {
     private final OfflinePlayer player;
     private final Map<Class<? extends Violation>, ViolationSet> violations = new HashMap<>();
     private Instant lastMessageTime;
-    private double score;
 
+    private double score;
+    private int messagesSinceLastViolation;
+    
     /**
      * Creates a new violation set.
      *
@@ -33,6 +35,7 @@ public final class PlayerViolationManager {
         
         setUpViolations();
         this.score = 0;
+        this.messagesSinceLastViolation = 0;
     }
 
     /**
@@ -67,6 +70,10 @@ public final class PlayerViolationManager {
         return level;
     }
 
+    public OfflinePlayer getPlayer() {
+        return this.player;
+    }
+
     /**
      * Adds a violation, and call the ViolationAddEvent for use elsewhere
      *
@@ -84,6 +91,8 @@ public final class PlayerViolationManager {
                 Bukkit.getServer().getPluginManager().callEvent(new ViolationAddEvent(violation.getPlayer(), violation));
             }
         });
+
+        this.messagesSinceLastViolation = 0;
     }
 
     /**
@@ -165,6 +174,14 @@ public final class PlayerViolationManager {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public void incrementMessagesSinceLastViolation() {
+        this.messagesSinceLastViolation++;
+    }
+
+    public int getMessagesSinceLastViolation() {
+        return this.messagesSinceLastViolation;
     }
 
     /**

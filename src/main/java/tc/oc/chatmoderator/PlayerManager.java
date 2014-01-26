@@ -2,9 +2,6 @@ package tc.oc.chatmoderator;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -13,7 +10,7 @@ import java.util.Map;
 /**
  * Manager for players. Handles the addition of violations and modifications of violation levels.
  */
-public final class PlayerManager implements Listener {
+public final class PlayerManager {
     private final Map<OfflinePlayer, PlayerViolationManager> violationSets = new HashMap<>();
     private final ChatModeratorPlugin plugin;
 
@@ -35,13 +32,10 @@ public final class PlayerManager implements Listener {
      */
     public @Nullable PlayerViolationManager getViolationSet(final OfflinePlayer player) {
         PlayerViolationManager violations = this.violationSets.get(Preconditions.checkNotNull(player, "Player"));
-        return violations;
-    }
-
-    @EventHandler
-    public void onPlayerLogin(final PlayerJoinEvent event) {
-        if (!this.violationSets.containsKey(event.getPlayer())) {
-            this.violationSets.put(event.getPlayer(), new PlayerViolationManager(event.getPlayer()));
+        if (violations == null) {
+            violations = new PlayerViolationManager(player);
+            this.violationSets.put(player, violations);
         }
+        return violations;
     }
 }

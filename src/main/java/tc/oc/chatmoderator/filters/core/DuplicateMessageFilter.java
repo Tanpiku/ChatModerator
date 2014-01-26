@@ -61,7 +61,7 @@ public class DuplicateMessageFilter extends Filter {
 
         if (lastMessage.withDurationAdded(delay, 1).isAfter(now)) {
             violationSet.addViolation(new DuplicateMessageViolation(message.getTimeSent(), player, message, difference, type, event));
-            message.setFixed(null);
+            message.setFixed("");
         } else {
             violationSet.setLastMessageTime(now);
         }
