@@ -28,6 +28,12 @@ public class WhitelistFactory implements ChatModeratorFactory {
     public WhitelistFactory build() {
         this.whitelist.addAll(plugin.getConfig().getStringList(path));
 
+        if (plugin.isDebugEnabled()) {
+            for (String s : this.whitelist) {
+                plugin.getLogger().info("Added whitelisted string: " + s);
+            }
+        }
+
         return this;
     }
 

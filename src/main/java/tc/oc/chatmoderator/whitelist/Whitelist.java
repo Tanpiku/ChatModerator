@@ -1,6 +1,8 @@
 package tc.oc.chatmoderator.whitelist;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+
 import tc.oc.chatmoderator.words.Word;
 
 import java.util.List;
@@ -33,4 +35,7 @@ public class Whitelist {
         return false;
     }
 
+    public ImmutableList<String> getWhitelist() {
+        return ImmutableList.copyOf(whitelist);
+    }
 }

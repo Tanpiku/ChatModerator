@@ -2,7 +2,6 @@ package tc.oc.chatmoderator.factories.core;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemorySection;
 import tc.oc.chatmoderator.ChatModeratorPlugin;
 import tc.oc.chatmoderator.factories.ChatModeratorFactory;
 
@@ -50,15 +49,18 @@ public class WeightedFilterFactory implements ChatModeratorFactory {
      *
      * @return The current state of the WeightedFilterFactory object.
      */
+    @SuppressWarnings("unchecked")
     public WeightedFilterFactory build() {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection(path);
 
-        for(Map.Entry<String, Object> entry : section.getValues(false).entrySet()) {
-            Pattern pattern = Pattern.compile(entry.getKey(), Pattern.CASE_INSENSITIVE);
-            Double value = ((MemorySection) entry.getValue()).getDouble("level", -1);
+        for (Object o : plugin.getConfig().getList(path)) {
+            Map<String, Object> map = (Map<String, Object>) o;
 
-            if(plugin.getConfig().getBoolean("debug.enabled")) {
-                plugin.getLogger().info("Added Profanity Expression: " + entry.getKey() + " -- " + ((MemorySection) entry.getValue()).getDouble("level", -1));
+            Pattern pattern = Pattern.compile((String) map.get("regex"));
+            Double value = (Double) map.get("level");
+
+            if(plugin.isDebugEnabled()) {
+                plugin.getLogger().info("Added weighted expression: " + pattern.pattern() + " -- " + value);
             }
 
             weights.put(pattern, value);

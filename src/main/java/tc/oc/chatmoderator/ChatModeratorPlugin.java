@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import tc.oc.chatmoderator.factories.core.LeetSpeakFilterFactory;
 import tc.oc.chatmoderator.factories.core.TemplateFactory;
+import tc.oc.chatmoderator.factories.core.WeightedFilterFactory;
 import tc.oc.chatmoderator.factories.core.ZoneFactory;
 import tc.oc.chatmoderator.filters.core.*;
 import tc.oc.chatmoderator.listeners.ChatModeratorListener;
@@ -58,7 +59,6 @@ public class ChatModeratorPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-       
         // Set up configuration, copy defaults, etc etc
         this.saveDefaultConfig();
         this.reloadConfig();
@@ -124,8 +124,10 @@ public class ChatModeratorPlugin extends JavaPlugin {
             new IPFilter(
                 this.getPlayerManager(),
                 new Permission("chatmoderator.filters.ipfilter.exempt"),
+                new WeightedFilterFactory(this, "filters.server-ip.expressions").build().getWeights(),
                 getConfig().getInt("filters.server-ip.priority"),
-                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style", "NONE"))
+                FixStyleApplicant.FixStyle.getFixStyleFor(getConfig().getString("filters.ipfilter.fix-style", "NONE")),
+                new WhitelistFactory(this, "filters.server-ip.whitelist").build().getWhitelist()
             ));
 
         moderatorListener.getFilterManager().registerFilter(

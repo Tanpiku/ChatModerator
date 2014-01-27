@@ -10,7 +10,9 @@ public class Settings {
 
     public static void register() {
         SettingRegistry register = PlayerSettings.getRegistry();
-        register.register(FILTER_SETTING);
+        if (!register.isRegistered(FILTER_SETTING)) {
+            register.register(FILTER_SETTING);
+        }
     }
 
     public static final Setting FILTER_SETTING = new SettingBuilder()

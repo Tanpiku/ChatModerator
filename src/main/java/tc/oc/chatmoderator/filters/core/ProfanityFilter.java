@@ -20,6 +20,7 @@ import tc.oc.chatmoderator.whitelist.Whitelist;
 import tc.oc.chatmoderator.words.CorrectedWord;
 import tc.oc.chatmoderator.words.Word;
 import tc.oc.chatmoderator.words.WordSet;
+import tc.oc.chatmoderator.words.factories.WordSetFactory;
 import tc.oc.chatmoderator.zones.ZoneType;
 
 import javax.annotation.Nullable;
@@ -63,6 +64,7 @@ public class ProfanityFilter extends WeightedWordsFilter {
             return message;
         }
 
+        String originalFixed = new String(message.getFixed());
         Matcher matcher;
         Set<String> profanities = new HashSet<>();
 
@@ -88,9 +90,6 @@ public class ProfanityFilter extends WeightedWordsFilter {
 
                 while (matcher.find()) {
                     profanities.add(matcher.group());
-
-                    word.setWord(FixStyleApplicant.fixWord(word, FixStyle.NONE).getWord());
-                    message.setFixed(wordSet.toString());
                 }
 
                 // TODO: Properly set the level for this violation
@@ -108,6 +107,7 @@ public class ProfanityFilter extends WeightedWordsFilter {
             word.setChecked(true);
         }
 
+        message.setFixed(originalFixed);
         return message;
     }
 }

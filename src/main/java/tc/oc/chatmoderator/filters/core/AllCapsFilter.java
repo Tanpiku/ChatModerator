@@ -45,7 +45,7 @@ public class AllCapsFilter extends WordFilter {
         Preconditions.checkArgument(maxChars > -1, "Max chars must be at least zero!");
 
         this.maxChars = maxChars;
-        this.pattern = Pattern.compile("[A-Z0-9]{" + (maxChars+1) + ",}");
+        this.pattern = Pattern.compile("[A-Z]{" + (maxChars+1) + ",}");
     }
 
     /**
@@ -88,10 +88,10 @@ public class AllCapsFilter extends WordFilter {
 
             if (upperCaseWords.size() > 0) {
                 violationManager.addViolation(violation);
+                upperCaseWords.clear();
             }
 
             word.setChecked(true);
-            upperCaseWords.clear();
         }
 
         return message;
