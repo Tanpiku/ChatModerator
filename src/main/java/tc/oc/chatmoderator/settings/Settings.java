@@ -18,9 +18,9 @@ public class Settings {
     public static final Setting FILTER_SETTING = new SettingBuilder()
         .name("ChatModerator").alias("filters").alias("filter").alias("cm")
         .summary("Detail the level of filters you want run on chat")
-        .description("ALL: Any messages containing profanity will not be sent\n" +
+        .description("ALL: All messages containing profanity will not be sent\n" +
                      "OFFENSIVE: Any message containing offensive profanity won't be sent\n" +
-                     "NONE: All messages will be sent")
+                     "NONE: No messages will be filtered")
         .type(new EnumType<FilterOptions>("Filter Options", FilterOptions.class))
         .defaultValue(FilterOptions.NONE).get();
 }
