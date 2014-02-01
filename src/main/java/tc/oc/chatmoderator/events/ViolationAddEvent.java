@@ -69,4 +69,8 @@ public class ViolationAddEvent extends Event {
     public Violation getViolation() {
         return violation;
     }
+
+    public @Nonnull OfflinePlayer getPlayer() {
+        return this.player;
+    }
 }
