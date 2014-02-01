@@ -53,20 +53,20 @@ public class ViolationPreWarningListener implements Listener {
         
         // Let's only support these violations for now, other violations are more or less utilities
         if (violation instanceof AllCapsViolation) {
-            builder.append(ChatColor.DARK_RED.toString()).append("AllCapsFilter.").append(ChatColor.DARK_AQUA.toString()).append(" Please do not use all uppercase when sending messages.");
+            builder.append(ChatColor.DARK_RED.toString()).append("AllCapsFilter.").append(ChatColor.DARK_AQUA.toString()).append("\nPlease do not use all uppercase when sending messages.");
         } else if (violation instanceof DuplicateMessageViolation) {
-            builder.append(ChatColor.DARK_RED.toString()).append("DuplicateMessageFilter.").append(ChatColor.DARK_AQUA.toString()).append(" Please do not send messages too fast.");
+            builder.append(ChatColor.DARK_RED.toString()).append("DuplicateMessageFilter.").append(ChatColor.DARK_AQUA.toString()).append("\nPlease do not send messages too fast.");
         } else if (violation instanceof ProfanityViolation) {
             ProfanityViolation v1 = (ProfanityViolation) event.getParent().getViolation();
             Joiner joiner = Joiner.on(", ").skipNulls();
 
-            builder.append(ChatColor.DARK_RED.toString()).append("ProfanityFilter.").append(ChatColor.DARK_AQUA.toString()).append(" Please do not send messages that contain the following words:\n");
+            builder.append(ChatColor.DARK_RED.toString()).append("ProfanityFilter.").append(ChatColor.DARK_AQUA.toString()).append("\nPlease do not send messages that contain the following words:\n");
             builder.append(joiner.join(v1.getProfanities()));
         } else if (violation instanceof ServerIPViolation) {
-            builder.append(ChatColor.DARK_RED.toString()).append("ServerIPFilter.").append(ChatColor.DARK_AQUA.toString()).append(" Please do not advertise your server.");
+            builder.append(ChatColor.DARK_RED.toString()).append("ServerIPFilter.").append(ChatColor.DARK_AQUA.toString()).append("\nPlease do not advertise your server.");
         }
 
-        builder.append("\n").append(ChatColor.GRAY).append(ChatColor.ITALIC).append("If you believe this was an error, please contact support@oc.tc");
+        builder.append("\n").append(ChatColor.GRAY).append(ChatColor.ITALIC).append("\nIf you believe this was an error, please contact support@oc.tc");
         event.setMessage(builder.toString());
     }
 }
