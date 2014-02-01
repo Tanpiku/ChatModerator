@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.joda.time.Instant;
 import tc.oc.chatmoderator.events.ViolationAddEvent;
@@ -21,6 +22,7 @@ public final class PlayerViolationManager {
     private final OfflinePlayer player;
     private final Map<Class<? extends Violation>, ViolationSet> violations = new HashMap<>();
     private Instant lastMessageTime;
+    private boolean warned = false;
 
     private double score;
     private int messagesSinceLastViolation;
@@ -182,6 +184,21 @@ public final class PlayerViolationManager {
 
     public int getMessagesSinceLastViolation() {
         return this.messagesSinceLastViolation;
+    }
+
+    public void setWarned(boolean warned) {
+        this.warned = warned;
+    }
+
+    public boolean isWarned() {
+        return this.warned;
+    }
+
+    public void sendWarning(String... messages) {
+        if (this.player.isOnline()) {
+            Player onlinePlayer = (Player) this.player;
+            onlinePlayer.sendMessage(messages);
+        }
     }
 
     /**
