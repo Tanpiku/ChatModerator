@@ -48,7 +48,7 @@ public class ViolationPreWarningListener implements Listener {
         Violation violation = event.getParent().getViolation();
 
         StringBuilder builder = new StringBuilder(ChatColor.GOLD.toString()).append("[ChatModerator]").append(ChatColor.GRAY).append(" - ");
-        builder.append(ChatColor.RED + "\u2717").append(ChatColor.DARK_AQUA).append("Your message was not sent to some people\n");
+        builder.append(ChatColor.DARK_AQUA.toString()).append(ChatColor.ITALIC.toString()).append("Your message was not sent to some people\n");
         builder.append("This message failed the ");
         
         // Let's only support these violations for now, other violations are more or less utilities
