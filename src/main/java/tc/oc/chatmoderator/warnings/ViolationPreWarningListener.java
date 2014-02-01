@@ -65,5 +65,6 @@ public class ViolationPreWarningListener implements Listener {
         }
 
         builder.append("\n").append(ChatColor.GRAY).append(ChatColor.ITALIC).append("If you believe this was an error, please contact support@oc.tc");
+        event.setMessage(builder.toString());
     }
 }
